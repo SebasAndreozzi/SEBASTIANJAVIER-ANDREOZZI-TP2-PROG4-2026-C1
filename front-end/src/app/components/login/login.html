@@ -1,0 +1,31 @@
+<div>
+    <h2>Iniciar sesion</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="enviarDatos()">
+        <div>
+            <label>Correo:</label>
+            <input type="email" formControlName="email" placeholder="correo@gmail.com">
+
+            @if(loginForm.get('email')?.invalid && loginForm.get('email')?.touched){
+                        <small>
+                @if(loginForm.get('email')?.errors?.['required']){ Campo obligatorio }
+                @if(loginForm.get('email')?.errors?.['email']){ Formato invalido }
+                </small>
+            }
+        </div>
+
+        <div>
+            <label>Clave:</label>
+            <input type="password" formControlName="clave" placeholder="correo@gmail.com">
+
+            @if(loginForm.get('clave')?.invalid && loginForm.get('clave')?.touched){
+                <small>
+                @if(loginForm.get('clave')?.errors?.['required']){ Campo obligatoria }
+                @if(loginForm.get('clave')?.errors?.['minlength']){ Debe contener 6 caracteres mínimo }
+                </small>
+            }
+        </div>
+
+        <button type="submit" [disabled]="loginForm.invalid">Enviar</button>
+
+    </form>
+</div>

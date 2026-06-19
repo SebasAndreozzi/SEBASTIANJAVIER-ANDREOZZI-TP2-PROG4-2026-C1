@@ -1,0 +1,61 @@
+<div>
+    <h2>Registrarse</h2>
+    <form [formGroup]="signupForm" (ngSubmit)="enviarDatos()">
+                <div>
+            <label>Nombre:</label>
+            <input type="text" formControlName="name" placeholder="Nombre">
+
+            @if(signupForm.get('name')?.invalid && signupForm.get('name')?.touched){
+                <small>
+                    @if(signupForm.get('name')?.errors?.['required']){ Campo obligatorio }
+                </small>
+            }
+        </div>
+                <div>
+            <label>Apellido:</label>
+            <input type="text" formControlName="surname" placeholder="Apellido">
+
+            @if(signupForm.get('surname')?.invalid && signupForm.get('surname')?.touched){
+                <small>
+                    @if(signupForm.get('surname')?.errors?.['required']){ Campo obligatorio }
+                </small>
+            }
+        </div>
+        <div>
+            <label>Edad:</label>
+            <input type="number" formControlName="age" placeholder="Edad">
+
+            @if(signupForm.get('age')?.invalid && signupForm.get('age')?.touched){
+                <small>
+                    @if(signupForm.get('age')?.errors?.['required']){ Campo obligatorio }
+                </small>
+            }
+        </div>
+        <div>
+            <label>Correo:</label>
+            <input type="email" formControlName="email" placeholder="correo@gmail.com">
+
+            @if(signupForm.get('email')?.invalid && signupForm.get('email')?.touched){
+                <small>
+                    @if(signupForm.get('email')?.errors?.['required']){ Campo obligatorio }
+                    @if(signupForm.get('email')?.errors?.['email']){ Formato invalido }
+                </small>
+            }
+        </div>
+
+        <div>
+            <label>Clave:</label>
+            <input type="password" formControlName="clave" placeholder="correo@gmail.com">
+
+            @if(signupForm.get('clave')?.invalid && signupForm.get('clave')?.touched){
+                <small>
+                    @if(signupForm.get('clave')?.errors?.['required']){ Campo obligatoria }
+                    @if(signupForm.get('clave')?.errors?.['minlength']){ Debe contener 6 caracteres mínimo }
+                </small>
+            }
+        </div>
+
+        <button type="submit" [disabled]="signupForm.invalid">Enviar</button>
+
+    </form>
+</div>
