@@ -69,7 +69,7 @@
           <div class="post-header">
             <div class="post-author">
               @if (post.autor.imagenPerfil) {
-                <img [src]="post.autor.imagenPerfil" alt="" class="author-avatar" />
+                <img [src]="post.autor.imagenPerfil | apiImage" alt="" class="author-avatar" />
               } @else {
                 <div class="author-avatar-placeholder">{{ post.autor.nombre.charAt(0) }}{{ post.autor.apellido.charAt(0) }}</div>
               }

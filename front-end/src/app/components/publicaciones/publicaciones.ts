@@ -5,10 +5,11 @@ import { Header } from '../header/header';
 import { PostsService } from '../../services/posts.service';
 import { AuthService } from '../../services/auth.service';
 import { Post } from '../../interfaces/post';
+import { ApiImagePipe } from '../../pipes/api-image.pipe';
 
 @Component({
   selector: 'app-publicaciones',
-  imports: [ReactiveFormsModule, DatePipe, Header],
+  imports: [ReactiveFormsModule, DatePipe, Header, ApiImagePipe],
   templateUrl: './publicaciones.html',
   styleUrl: './publicaciones.css',
 })

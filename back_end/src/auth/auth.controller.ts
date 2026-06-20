@@ -12,7 +12,7 @@ export class AuthController {
   @UseInterceptors(
     FileInterceptor('imagenPerfil', {
       storage: diskStorage({
-        destination: join(__dirname, '../../uploads'),
+        destination: join(process.cwd(), 'uploads'),
         filename: (_req, file, callback) => {
           const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
           const ext = extname(file.originalname);

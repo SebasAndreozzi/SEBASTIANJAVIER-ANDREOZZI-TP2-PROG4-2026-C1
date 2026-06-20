@@ -1,8 +1,8 @@
 <header class="app-header">
   <div class="header-content">
     <a routerLink="/publicaciones" class="header-logo">
-      <img ngSrc="/favicon.ico" alt="RS" class="logo-mini" width="36" height="36" />
-      <span class="logo-name">Red Social</span>
+      <img src="/favicon.ico" alt="SC" class="logo-mini" />
+      <span class="logo-name">S-CARD</span>
     </a>
 
     <nav class="header-nav">
@@ -27,11 +27,11 @@
     <div class="header-user">
       @if (authService.currentUser(); as user) {
         <div class="user-info">
-          <span class="user-greeting">{{ user.nombre }}</span>
+          <span class="user-greeting">{{ user.nombreUsuario }}</span>
           @if (user.imagenPerfil) {
-            <img [src]="user.imagenPerfil" alt="Avatar" class="user-avatar" />
+            <img [src]="user.imagenPerfil | apiImage" alt="Avatar" class="user-avatar" />
           } @else {
-            <div class="user-avatar-placeholder">{{ user.nombre.charAt(0) }}{{ user.apellido.charAt(0) }}</div>
+            <div class="user-avatar-placeholder">{{ user.nombreUsuario }}</div>
           }
         </div>
         <button class="btn-logout" (click)="authService.logout()" aria-label="Cerrar sesión">

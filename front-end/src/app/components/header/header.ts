@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { NgOptimizedImage } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
+import { ApiImagePipe } from '../../pipes/api-image.pipe';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, RouterLinkActive, NgOptimizedImage],
+  imports: [RouterLink, RouterLinkActive, ApiImagePipe],
   templateUrl: './header.html',
   styleUrl: './header.css',
 })

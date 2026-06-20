@@ -4,10 +4,11 @@ import { Header } from '../header/header';
 import { AuthService } from '../../services/auth.service';
 import { UsersService } from '../../services/users.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ApiImagePipe } from '../../pipes/api-image.pipe';
 
 @Component({
   selector: 'app-perfil-usuario',
-  imports: [ReactiveFormsModule, Header],
+  imports: [ReactiveFormsModule, Header, ApiImagePipe],
   templateUrl: './perfil-usuario.html',
   styleUrl: './perfil-usuario.css',
 })
