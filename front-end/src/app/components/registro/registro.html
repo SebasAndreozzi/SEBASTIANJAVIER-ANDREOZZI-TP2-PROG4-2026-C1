@@ -26,7 +26,7 @@
 
       <div class="form-group">
         <label for="email">Correo electrónico</label>
-        <input id="email" type="email" formControlName="email" placeholder="ejemplo@correo.com" [class.is-invalid]="signupForm.get('email')?.invalid && signupForm.get('email')?.touched" />
+        <input id="email" type="email" formControlName="email" placeholder="ejemplo@scard.com" [class.is-invalid]="signupForm.get('email')?.invalid && signupForm.get('email')?.touched" />
         @if (signupForm.get('email')?.invalid && signupForm.get('email')?.touched) {
           <div class="error-msg">
             @if (signupForm.get('email')?.errors?.['required']) { <span>Campo obligatorio</span> }
@@ -37,7 +37,7 @@
 
       <div class="form-group">
         <label for="nombreUsuario">Nombre de usuario</label>
-        <input id="nombreUsuario" type="text" formControlName="nombreUsuario" placeholder="@usuario" [class.is-invalid]="signupForm.get('nombreUsuario')?.invalid && signupForm.get('nombreUsuario')?.touched" />
+        <input id="nombreUsuario" type="text" formControlName="nombreUsuario" placeholder="Usuario" [class.is-invalid]="signupForm.get('nombreUsuario')?.invalid && signupForm.get('nombreUsuario')?.touched" />
         @if (signupForm.get('nombreUsuario')?.invalid && signupForm.get('nombreUsuario')?.touched) {
           <div class="error-msg">Campo obligatorio</div>
         }
@@ -115,7 +115,7 @@
     </form>
 
     <p class="login-link">
-      ¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a>
+      ¿Ya tenés cuenta? <a routerLink="/login">Inicia sesión</a>
     </p>
   </div>
 </div>
