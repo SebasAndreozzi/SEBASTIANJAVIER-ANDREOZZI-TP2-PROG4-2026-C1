@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './guards/auth.guard';
 import { Login } from './components/login/login'
 import { Registro } from './components/registro/registro'
 import { Publicaciones } from './components/publicaciones/publicaciones';
