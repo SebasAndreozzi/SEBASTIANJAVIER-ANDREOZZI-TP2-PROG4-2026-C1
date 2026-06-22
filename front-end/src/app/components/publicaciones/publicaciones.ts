@@ -1,9 +1,10 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component, inject, signal, OnInit, OnDestroy } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Header } from '../header/header';
 import { PostCard } from '../post-card/post-card';
 import { PostsService } from '../../services/posts.service';
 import { AuthService } from '../../services/auth.service';
+import { SocketService } from '../../services/socket.service';
 import { Post } from '../../interfaces/post';
 
 @Component({
@@ -12,9 +13,10 @@ import { Post } from '../../interfaces/post';
   templateUrl: './publicaciones.html',
   styleUrl: './publicaciones.css',
 })
-export class Publicaciones implements OnInit {
+export class Publicaciones implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
   private postsService = inject(PostsService);
+  private socketService = inject(SocketService);
   protected authService = inject(AuthService);
 
   posts = signal<Post[]>([]);
@@ -27,7 +29,7 @@ export class Publicaciones implements OnInit {
   totalPages = signal(0);
   sortBy = signal<'createdAt' | 'likes'>('createdAt');
 
-  pageSize = 10;
+  pageSize = 5;
 
   postForm = this.fb.group({
     titulo: ['', [Validators.required]],
@@ -36,6 +38,23 @@ export class Publicaciones implements OnInit {
 
   ngOnInit() {
     this.loadPosts();
+    this.socketService.on('postCreated', (post: Post) => {
+      this.posts.update((posts) => [post, ...posts]);
+    });
+    this.socketService.on('postUpdated', (post: Post) => {
+      this.posts.update((posts) =>
+        posts.map((p) => (p._id === post._id ? post : p)),
+      );
+    });
+    this.socketService.on('postDeleted', (postId: string) => {
+      this.posts.update((posts) => posts.filter((p) => p._id !== postId));
+    });
+  }
+
+  ngOnDestroy() {
+    this.socketService.off('postCreated');
+    this.socketService.off('postUpdated');
+    this.socketService.off('postDeleted');
   }
 
   loadPosts() {
@@ -57,8 +76,8 @@ export class Publicaciones implements OnInit {
     });
   }
 
-  setSort(sort: 'createdAt' | 'likes') {
-    this.sortBy.set(sort);
+  toggleSort() {
+    this.sortBy.update((current) => current === 'createdAt' ? 'likes' : 'createdAt');
     this.currentPage.set(0);
     this.loadPosts();
   }
@@ -125,16 +144,6 @@ export class Publicaciones implements OnInit {
     const isLiked = user ? post.likes.includes(user._id) : false;
 
     (isLiked ? this.postsService.unlikePost(postId) : this.postsService.likePost(postId)).subscribe({
-      next: (updatedPost) => {
-        this.posts.update((posts) =>
-          posts.map((p) => (p._id === updatedPost._id ? updatedPost : p)),
-        );
-      },
-    });
-  }
-
-  onComment(data: { postId: string; text: string }) {
-    this.postsService.addComment(data.postId, data.text).subscribe({
       next: (updatedPost) => {
         this.posts.update((posts) =>
           posts.map((p) => (p._id === updatedPost._id ? updatedPost : p)),

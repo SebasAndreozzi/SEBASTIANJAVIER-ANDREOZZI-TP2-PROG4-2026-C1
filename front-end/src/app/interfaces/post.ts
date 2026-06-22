@@ -1,8 +1,7 @@
 export interface Comentario {
   _id?: string;
-  usuario: { _id: string; nombre: string; apellido: string; nombreUsuario: string };
+  nombreUsuario: string;
   contenido: string;
-  fecha: string;
 }
 
 export interface Post {

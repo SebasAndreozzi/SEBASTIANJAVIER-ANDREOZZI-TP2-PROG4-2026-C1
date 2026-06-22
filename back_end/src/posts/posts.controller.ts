@@ -71,9 +71,4 @@ export class PostsController {
     return this.postsService.unlikePost(id, req.user.sub);
   }
 
-  @UseGuards(AuthGuard)
-  @Post(':id/comentarios')
-  async addComment(@Param('id') id: string, @Body() body: { contenido: string }, @Req() req: any) {
-    return this.postsService.addComment(id, req.user.sub, body.contenido);
-  }
 }

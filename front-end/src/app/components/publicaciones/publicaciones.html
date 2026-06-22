@@ -47,10 +47,10 @@
 
     <div class="sort-bar">
       <span class="sort-label">Ordenar por:</span>
-      <button class="sort-btn" [class.active]="sortBy() === 'createdAt'" (click)="setSort('createdAt')">
-        Fecha
-      </button>
-      <button class="sort-btn" [class.active]="sortBy() === 'likes'" (click)="setSort('likes')">
+      <button class="sort-btn" [class.active]="sortBy() === 'likes'" (click)="toggleSort()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+        </svg>
         Me gusta
       </button>
     </div>
@@ -78,7 +78,6 @@
         <app-post-card
           [post]="post"
           (liked)="onLike($event)"
-          (commentSent)="onComment($event)"
           (deleted)="onDelete($event)"
         />
       }

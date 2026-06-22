@@ -41,7 +41,4 @@ export class PostsService {
     return this.http.delete<Post>(`${this.apiUrl}/${id}/like`);
   }
 
-  addComment(id: string, contenido: string): Observable<Post> {
-    return this.http.post<Post>(`${this.apiUrl}/${id}/comentarios`, { contenido });
-  }
 }

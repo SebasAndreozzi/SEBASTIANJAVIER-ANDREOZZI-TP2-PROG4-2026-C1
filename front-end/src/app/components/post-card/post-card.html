@@ -8,7 +8,7 @@
       }
       <div class="author-info">
         <span class="author-name">{{ post().autor.nombre }} {{ post().autor.apellido }}</span>
-        <span class="post-date">{{ post().createdAt | date: 'medium' }}</span>
+        <span class="post-date">{{ post().createdAt | date: 'MMM d, HH:mm' }}</span>
       </div>
     </div>
     @if (isOwnPost()) {
@@ -38,35 +38,18 @@
     </button>
   </div>
 
-  <div class="post-comments">
-    @if (post().comentarios.length > 0) {
+  @if (safeComments().length > 0) {
+    <div class="post-comments">
       <div class="comments-list">
-        @for (comment of post().comentarios; track comment._id) {
+        @for (comment of safeComments(); track $index) {
           <div class="comment-item">
-            <div class="comment-avatar">{{ comment.usuario.nombre.charAt(0) }}{{ comment.usuario.apellido.charAt(0) }}</div>
             <div class="comment-content">
-              <span class="comment-author">{{ comment.usuario.nombre }} {{ comment.usuario.apellido }}</span>
+              <span class="comment-author">{{ comment.nombreUsuario}} </span>
               <p class="comment-text">{{ comment.contenido }}</p>
             </div>
           </div>
         }
       </div>
-    }
-
-    <div class="comment-input-group">
-      <input
-        type="text"
-        [(ngModel)]="commentText"
-        (keydown.enter)="onSendComment()"
-        placeholder="Escribe un comentario..."
-        class="comment-input"
-      />
-      <button class="comment-send-btn" (click)="onSendComment()" [disabled]="!commentText.trim()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="22" y1="2" x2="11" y2="13"></line>
-          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-        </svg>
-      </button>
     </div>
-  </div>
-</article>
+  }
+

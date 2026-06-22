@@ -1,10 +1,11 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component, inject, signal, OnInit, OnDestroy } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Header } from '../header/header';
 import { PostCard } from '../post-card/post-card';
 import { AuthService } from '../../services/auth.service';
 import { UsersService } from '../../services/users.service';
 import { PostsService } from '../../services/posts.service';
+import { SocketService } from '../../services/socket.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ApiImagePipe } from '../../pipes/api-image.pipe';
 import { Post } from '../../interfaces/post';
@@ -15,11 +16,12 @@ import { Post } from '../../interfaces/post';
   templateUrl: './perfil-usuario.html',
   styleUrl: './perfil-usuario.css',
 })
-export class PerfilUsuario implements OnInit {
+export class PerfilUsuario implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private usersService = inject(UsersService);
   private postsService = inject(PostsService);
+  private socketService = inject(SocketService);
 
   editing = signal(false);
   loading = signal(false);
@@ -43,6 +45,19 @@ export class PerfilUsuario implements OnInit {
       this.patchForm(user);
       this.loadUserPosts(user._id);
     }
+    this.socketService.on('postUpdated', (post: Post) => {
+      this.userPosts.update((posts) =>
+        posts.map((p) => (p._id === post._id ? post : p)),
+      );
+    });
+    this.socketService.on('postDeleted', (postId: string) => {
+      this.userPosts.update((posts) => posts.filter((p) => p._id !== postId));
+    });
+  }
+
+  ngOnDestroy() {
+    this.socketService.off('postUpdated');
+    this.socketService.off('postDeleted');
   }
 
   private patchForm(user: any) {
@@ -69,16 +84,6 @@ export class PerfilUsuario implements OnInit {
     const isLiked = user ? post.likes.includes(user._id) : false;
 
     (isLiked ? this.postsService.unlikePost(postId) : this.postsService.likePost(postId)).subscribe({
-      next: (updatedPost) => {
-        this.userPosts.update((posts) =>
-          posts.map((p) => (p._id === updatedPost._id ? updatedPost : p)),
-        );
-      },
-    });
-  }
-
-  onComment(data: { postId: string; text: string }) {
-    this.postsService.addComment(data.postId, data.text).subscribe({
       next: (updatedPost) => {
         this.userPosts.update((posts) =>
           posts.map((p) => (p._id === updatedPost._id ? updatedPost : p)),
