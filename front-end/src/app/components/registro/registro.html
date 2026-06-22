@@ -1,0 +1,121 @@
+<div class="register-container">
+  <div class="register-card">
+    <div class="register-header">
+      <img src="/favicon.ico" alt="SC" class="logo-mini" />
+      <h1>Crear Cuenta</h1>
+      <p class="subtitle">Uníte a S-CARD</p>
+    </div>
+
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="register-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="nombre">Nombre</label>
+          <input id="nombre" type="text" formControlName="nombre" placeholder="Juan" [class.is-invalid]="signupForm.get('nombre')?.invalid && signupForm.get('nombre')?.touched" />
+          @if (signupForm.get('nombre')?.invalid && signupForm.get('nombre')?.touched) {
+            <div class="error-msg">Campo obligatorio</div>
+          }
+        </div>
+        <div class="form-group">
+          <label for="apellido">Apellido</label>
+          <input id="apellido" type="text" formControlName="apellido" placeholder="Pérez" [class.is-invalid]="signupForm.get('apellido')?.invalid && signupForm.get('apellido')?.touched" />
+          @if (signupForm.get('apellido')?.invalid && signupForm.get('apellido')?.touched) {
+            <div class="error-msg">Campo obligatorio</div>
+          }
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Correo electrónico</label>
+        <input id="email" type="email" formControlName="email" placeholder="ejemplo@scard.com" [class.is-invalid]="signupForm.get('email')?.invalid && signupForm.get('email')?.touched" />
+        @if (signupForm.get('email')?.invalid && signupForm.get('email')?.touched) {
+          <div class="error-msg">
+            @if (signupForm.get('email')?.errors?.['required']) { <span>Campo obligatorio</span> }
+            @if (signupForm.get('email')?.errors?.['email']) { <span>Formato inválido</span> }
+          </div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="nombreUsuario">Nombre de usuario</label>
+        <input id="nombreUsuario" type="text" formControlName="nombreUsuario" placeholder="Usuario" [class.is-invalid]="signupForm.get('nombreUsuario')?.invalid && signupForm.get('nombreUsuario')?.touched" />
+        @if (signupForm.get('nombreUsuario')?.invalid && signupForm.get('nombreUsuario')?.touched) {
+          <div class="error-msg">Campo obligatorio</div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="fechaNacimiento">Fecha de nacimiento</label>
+        <input id="fechaNacimiento" type="date" formControlName="fechaNacimiento" [class.is-invalid]="signupForm.get('fechaNacimiento')?.invalid && signupForm.get('fechaNacimiento')?.touched" />
+        @if (signupForm.get('fechaNacimiento')?.invalid && signupForm.get('fechaNacimiento')?.touched) {
+          <div class="error-msg">
+            @if (signupForm.get('fechaNacimiento')?.errors?.['required']) { <span>Campo obligatorio</span> }
+            @if (signupForm.get('fechaNacimiento')?.errors?.['futureDate']) { <span>La fecha no puede ser futura</span> }
+          </div>
+        }
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="password">Contraseña</label>
+          <input id="password" type="password" formControlName="password" placeholder="••••••••" [class.is-invalid]="signupForm.get('password')?.invalid && signupForm.get('password')?.touched" />
+          @if (signupForm.get('password')?.invalid && signupForm.get('password')?.touched) {
+            <div class="error-msg">
+              @if (signupForm.get('password')?.errors?.['required']) { <span>Campo obligatorio</span> }
+              @if (signupForm.get('password')?.errors?.['weakPassword']) { <span>Mínimo 8 caracteres, una mayúscula y un número</span> }
+            </div>
+          }
+        </div>
+        <div class="form-group">
+          <label for="confirmPassword">Confirmar contraseña</label>
+          <input id="confirmPassword" type="password" formControlName="confirmPassword" placeholder="••••••••" [class.is-invalid]="signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched" />
+          @if (signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched) {
+            <div class="error-msg">Campo obligatorio</div>
+          }
+        </div>
+      </div>
+      @if (signupForm.errors?.['passwordMismatch'] && signupForm.get('confirmPassword')?.touched) {
+        <div class="error-msg">Las contraseñas no coinciden</div>
+      }
+
+      <div class="form-group">
+        <label for="descripcionBreve">Descripción breve</label>
+        <textarea id="descripcionBreve" formControlName="descripcionBreve" placeholder="Cuéntanos sobre ti..." rows="3"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="perfil">Rol</label>
+        <select id="perfil" formControlName="perfil">
+          <option value="usuario">Usuario</option>
+          <option value="administrador">Administrador</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="imagenPerfil">Imagen de perfil</label>
+        <input id="imagenPerfil" type="file" accept="image/*" (change)="onFileSelected($event)" class="file-input" />
+        @if (previewUrl()) {
+          <div class="preview-container">
+            <img [src]="previewUrl()" alt="Vista previa" class="preview-img" />
+          </div>
+        }
+      </div>
+
+      @if (errorMessage()) {
+        <div class="error-banner" role="alert">{{ errorMessage() }}</div>
+      }
+
+      <button type="submit" class="btn-primary" [disabled]="loading()">
+        @if (loading()) {
+          <span class="spinner"></span>
+          Registrando...
+        } @else {
+          Crear Cuenta
+        }
+      </button>
+    </form>
+
+    <p class="login-link">
+      ¿Ya tenés cuenta? <a routerLink="/login">Inicia sesión</a>
+    </p>
+  </div>
+</div>

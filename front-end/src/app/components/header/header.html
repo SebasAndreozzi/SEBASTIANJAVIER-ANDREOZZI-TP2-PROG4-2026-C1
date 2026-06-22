@@ -1,0 +1,48 @@
+<header class="app-header">
+  <div class="header-content">
+    <a routerLink="/publicaciones" class="header-logo">
+      <img src="/favicon.ico" alt="SC" class="logo-mini" />
+      <span class="logo-name">S-CARD</span>
+    </a>
+
+    <nav class="header-nav">
+      <a routerLink="/publicaciones" routerLinkActive="active" class="nav-link">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+        Publicaciones
+      </a>
+      <a routerLink="/perfil" routerLinkActive="active" class="nav-link">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        Mi Perfil
+      </a>
+    </nav>
+
+    <div class="header-user">
+      @if (authService.currentUser(); as user) {
+        <div class="user-info">
+          <span class="user-greeting">{{ user.nombreUsuario }}</span>
+          @if (user.imagenPerfil) {
+            <img [src]="user.imagenPerfil | apiImage" alt="Avatar" class="user-avatar" />
+          } @else {
+            <div class="user-avatar-placeholder">{{ user.nombreUsuario }}</div>
+          }
+        </div>
+        <button class="btn-logout" (click)="authService.logout()" aria-label="Cerrar sesión">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          Salir
+        </button>
+      }
+    </div>
+  </div>
+</header>
