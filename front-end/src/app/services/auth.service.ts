@@ -4,12 +4,13 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthResponse, User } from '../interfaces/user';
 import { Observable, tap } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly apiUrl = 'http://localhost:3000/auth';
+  private readonly apiUrl = environment.apiUrl + '/auth';
   private readonly tokenKey = 'auth_token';
   private readonly userKey = 'auth_user';
 

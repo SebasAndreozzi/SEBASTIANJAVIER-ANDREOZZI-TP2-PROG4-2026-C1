@@ -37,21 +37,27 @@
             }
           },
           "configurations": {
-            "production": {
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "8kB",
-                  "maximumError": "16kB"
-                }
-              ],
-              "outputHashing": "all"
-            },
+              "production": {
+                "budgets": [
+                  {
+                    "type": "initial",
+                    "maximumWarning": "500kB",
+                    "maximumError": "1MB"
+                  },
+                  {
+                    "type": "anyComponentStyle",
+                    "maximumWarning": "8kB",
+                    "maximumError": "16kB"
+                  }
+                ],
+                "outputHashing": "all",
+                "fileReplacements": [
+                  {
+                    "src": "src/environments/environment.ts",
+                    "replaceWith": "src/environments/environment.prod.ts"
+                  }
+                ]
+              },
             "development": {
               "optimization": false,
               "extractLicenses": false,
