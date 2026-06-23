@@ -27,7 +27,7 @@ export class Post {
   comentarios!: { usuario: Types.ObjectId; contenido: string;}[];
 
   @Prop({ default: true })
-  activo: boolean;
+  activo!: boolean;
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);
