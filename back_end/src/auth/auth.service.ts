@@ -33,7 +33,7 @@ export class AuthService {
       fechaNacimiento: fechaFormateada,
       descripcionBreve: descripcionBreve || '',
       perfil: perfil || 'usuario',
-      imagenPerfil: imagenPerfil || '',
+      imagenPerfil: imagenPerfil || '/uploads/default.jpg',
     });
 
     return {
