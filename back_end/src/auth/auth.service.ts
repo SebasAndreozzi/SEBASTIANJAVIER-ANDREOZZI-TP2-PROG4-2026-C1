@@ -1,5 +1,4 @@
 import { Injectable, UnauthorizedException, BadRequestException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UsersService } from '../users/users.service';
 
@@ -7,7 +6,6 @@ import { UsersService } from '../users/users.service';
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
-    private readonly jwtService: JwtService,
   ) {}
 
   async register(registerDto: any, imagenPerfil?: string) {
@@ -38,9 +36,7 @@ export class AuthService {
       imagenPerfil: imagenPerfil || '',
     });
 
-    const payload = { sub: user._id, email: user.email };
     return {
-      token: this.jwtService.sign(payload),
       user: this.sanitizeUser(user),
     };
   }
@@ -58,9 +54,7 @@ export class AuthService {
       throw new UnauthorizedException('Credenciales inválidas');
     }
 
-    const payload = { sub: user._id, email: user.email };
     return {
-      token: this.jwtService.sign(payload),
       user: this.sanitizeUser(user),
     };
   }

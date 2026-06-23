@@ -101,7 +101,7 @@
       </div>
 
       @if (errorMessage()) {
-        <div class="error-banner" role="alert">{{ errorMessage() }}</div>
+        <div class="error-banner">{{ errorMessage() }}</div>
       }
 
       <button type="submit" class="btn-primary" [disabled]="loading()">
