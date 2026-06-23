@@ -46,7 +46,7 @@ export class PostsService {
       const populated = await this.postModel
         .find({ _id: { $in: ids } })
         .populate('autor', 'nombre apellido nombreUsuario imagenPerfil')
-        .populate('comentarios.usuario', 'nombre apellido nombreUsuario')
+        .populate('comentarios.usuario', 'nombreUsuario')
         .exec();
 
       const map = new Map(populated.map((p) => [p._id.toString(), p]));
@@ -59,7 +59,7 @@ export class PostsService {
       .skip(offset)
       .limit(limit)
       .populate('autor', 'nombre apellido nombreUsuario imagenPerfil')
-      .populate('comentarios.usuario', 'nombre apellido nombreUsuario')
+      .populate('comentarios.usuario', 'nombreUsuario')
       .exec();
   }
 
@@ -67,7 +67,7 @@ export class PostsService {
     return this.postModel
       .findById(id)
       .populate('autor', 'nombre apellido nombreUsuario imagenPerfil')
-      .populate('comentarios.usuario', 'nombre apellido nombreUsuario')
+      .populate('comentarios.usuario', 'nombreUsuario')
       .exec();
   }
 

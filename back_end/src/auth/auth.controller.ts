@@ -1,24 +1,20 @@
 import { Controller, Post, Body, UseInterceptors, UploadedFile, BadRequestException } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { extname, join } from 'path';
+import { memoryStorage } from 'multer';
 import { AuthService } from './auth.service';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly cloudinaryService: CloudinaryService,
+  ) {}
 
   @Post('register')
   @UseInterceptors(
     FileInterceptor('imagenPerfil', {
-      storage: diskStorage({
-        destination: join(process.cwd(), 'uploads'),
-        filename: (_req, file, callback) => {
-          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-          const ext = extname(file.originalname);
-          callback(null, `${uniqueSuffix}${ext}`);
-        },
-      }),
+      storage: memoryStorage(),
       fileFilter: (_req, file, callback) => {
         if (!file.mimetype.match(/^image\//)) {
           callback(new BadRequestException('Solo se permiten imágenes'), false);
@@ -32,7 +28,10 @@ export class AuthController {
     @Body() body: any,
     @UploadedFile() file?: Express.Multer.File,
   ) {
-    const imagenPerfil = file ? `/uploads/${file.filename}` : undefined;
+    let imagenPerfil: string | undefined;
+    if (file) {
+      imagenPerfil = await this.cloudinaryService.uploadImage(file.buffer, 'profile-pictures');
+    }
     return this.authService.register(body, imagenPerfil);
   }
 

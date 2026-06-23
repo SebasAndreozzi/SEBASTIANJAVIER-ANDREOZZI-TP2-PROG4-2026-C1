@@ -6,25 +6,25 @@ export type PostDocument = Post & Document;
 @Schema({ timestamps: true })
 export class Post {
   @Prop({ required: true })
-  titulo: string;
+  titulo!: string;
 
   @Prop({ required: true })
-  mensaje: string;
+  mensaje!: string;
 
   @Prop({ default: '' })
-  imagen: string;
+  imagen!: string;
 
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
-  autor: Types.ObjectId;
+  autor!: Types.ObjectId;
 
   @Prop({ default: [] })
-  likes: string[];
+  likes!: string[];
 
   @Prop({
-    type: [{ usuario: { type: Types.ObjectId, ref: 'User' }, contenido: String, fecha: Date }],
+    type: [{ usuario: { type: Types.ObjectId, ref: 'User' }, contenido: String }],
     default: [],
   })
-  comentarios: { usuario: Types.ObjectId; contenido: string; fecha: Date }[];
+  comentarios!: { usuario: Types.ObjectId; contenido: string;}[];
 
   @Prop({ default: true })
   activo: boolean;

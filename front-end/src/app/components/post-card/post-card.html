@@ -7,7 +7,7 @@
         <div class="author-avatar-placeholder">{{ post().autor.nombre.charAt(0) }}{{ post().autor.apellido.charAt(0) }}</div>
       }
       <div class="author-info">
-        <span class="author-name">{{ post().autor.nombre }} {{ post().autor.apellido }}</span>
+        <span class="author-name">{{ post().autor.nombreUsuario }}</span>
         <span class="post-date">{{ post().createdAt | date: 'MMM d, HH:mm' }}</span>
       </div>
     </div>
