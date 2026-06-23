@@ -26,9 +26,7 @@ import { AuthModule } from './auth/auth.module';
     ServeStaticModule.forRoot({
       rootPath: join(process.cwd(), 'uploads'),
       serveRoot: '/uploads',
-    }),
-    UsersModule,
-    AuthModule
+    })
   ],
 })
 export class AppModule {}
