@@ -4,7 +4,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { mkdirSync, existsSync } from 'fs';
 import { join } from 'path';
 
-async function bootstrap() {
+async function startServer() {
   const uploadsDir = join(process.cwd(), 'uploads');
   if (!existsSync(uploadsDir)) {
     mkdirSync(uploadsDir, { recursive: true });
@@ -22,4 +22,4 @@ async function bootstrap() {
 
   await app.listen(process.env.PORT ?? 3000);
 }
-bootstrap();
+startServer();

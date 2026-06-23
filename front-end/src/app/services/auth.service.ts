@@ -11,7 +11,6 @@ import { environment } from '../../environments/environment';
 })
 export class AuthService {
   private readonly apiUrl = environment.apiUrl + '/auth';
-  private readonly tokenKey = 'auth_token';
   private readonly userKey = 'auth_user';
 
   currentUser = signal<User | null>(null);
@@ -27,9 +26,8 @@ export class AuthService {
 
   private loadStoredUser() {
     if (!isPlatformBrowser(this.platformId)) return;
-    const token = localStorage.getItem(this.tokenKey);
     const userStr = localStorage.getItem(this.userKey);
-    if (token && userStr) {
+    if (userStr) {
       try {
         const user = JSON.parse(userStr) as User;
         this.currentUser.set(user);
@@ -54,7 +52,6 @@ export class AuthService {
 
   private setAuth(res: AuthResponse) {
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem(this.tokenKey, res.token);
       localStorage.setItem(this.userKey, JSON.stringify(res.user));
     }
     this.currentUser.set(res.user);
@@ -68,15 +65,10 @@ export class AuthService {
 
   private clearAuth() {
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem(this.tokenKey);
       localStorage.removeItem(this.userKey);
     }
     this.currentUser.set(null);
     this.isAuthenticated.set(false);
   }
 
-  getToken(): string | null {
-    if (!isPlatformBrowser(this.platformId)) return null;
-    return localStorage.getItem(this.tokenKey);
-  }
 }

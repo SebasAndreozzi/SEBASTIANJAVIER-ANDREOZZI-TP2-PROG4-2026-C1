@@ -28,6 +28,7 @@ import { PostsModule } from './posts/posts.module';
       rootPath: join(process.cwd(), 'uploads'),
       serveRoot: '/uploads',
     }),
+
     UsersModule,
     AuthModule,
     PostsModule

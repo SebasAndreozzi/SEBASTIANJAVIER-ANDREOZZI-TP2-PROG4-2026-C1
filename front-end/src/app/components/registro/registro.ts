@@ -3,35 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators, AbstractControl, Validati
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
-
-function passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
-  const password = control.get('password');
-  const confirmPassword = control.get('confirmPassword');
-  if (password && confirmPassword && password.value !== confirmPassword.value) {
-    return { passwordMismatch: true };
-  }
-  return null;
-}
-
-function futureDateValidator(control: AbstractControl): ValidationErrors | null {
-  if (!control.value) return null;
-  const today = new Date();
-  today.setHours(23, 59, 59, 999);
-  const selected = new Date(control.value + 'T12:00:00');
-  if (selected > today) {
-    return { futureDate: true };
-  }
-  return null;
-}
-
-function passwordStrengthValidator(control: AbstractControl): ValidationErrors | null {
-  const value = control.value || '';
-  const hasUpperCase = /[A-Z]/.test(value);
-  const hasNumber = /[0-9]/.test(value);
-  const hasMinLength = value.length >= 8;
-  const valid = hasUpperCase && hasNumber && hasMinLength;
-  return valid ? null : { weakPassword: true };
-}
+import { passwordStrengthValidator, passwordMatchValidator, futureDateValidator } from '../../services/validators';
 
 @Component({
   selector: 'app-registro',
