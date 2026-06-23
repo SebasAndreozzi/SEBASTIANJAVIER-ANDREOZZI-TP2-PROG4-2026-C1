@@ -1,5 +1,5 @@
 ALUMNO: Sebastián Javier Andreozzi
-DEPLOY: https://tp1sala-juegossebasti-git-fe13d0-sebastian-andreozzi-s-projects.vercel.app?_vercel_share=PYDa7Jq2FluH5zuOCTIMIGxkQUsKoree
+DEPLOY: https://sebastianjavier-andreozzi-tp-2-prog.vercel.app?_vercel_share=I0UVn9MqEuZDUxY6EH1GLiupb8DcRo57
 TECNOLOGÍAS: BD con MongoDB
 FrontEnd con Angular21
 BackEnd con NestJS
