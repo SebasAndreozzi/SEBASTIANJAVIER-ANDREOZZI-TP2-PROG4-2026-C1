@@ -1,0 +1,22 @@
+export interface Comentario {
+  _id?: string;
+  nombreUsuario: string;
+  contenido: string;
+}
+
+export interface Post {
+  _id: string;
+  titulo: string;
+  mensaje: string;
+  imagen: string;
+  autor: {
+    _id: string;
+    nombre: string;
+    apellido: string;
+    nombreUsuario: string;
+    imagenPerfil: string;
+  };
+  likes: string[];
+  comentarios: Comentario[];
+  createdAt: string;
+}

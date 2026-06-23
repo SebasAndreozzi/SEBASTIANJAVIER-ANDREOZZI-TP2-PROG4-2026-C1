@@ -19,4 +19,11 @@ export class UsersService {
   async findByNombreUsuario(nombreUsuario: string): Promise<UserDocument | null> {
     return this.userModel.findOne({ nombreUsuario }).exec();
   }
+  async findById(id: string): Promise<UserDocument | null> {
+    return this.userModel.findById(id).exec();
+  }
+
+  async update(id: string, updateData: any): Promise<UserDocument | null> {
+    return this.userModel.findByIdAndUpdate(id, updateData, { new: true }).exec();
+  }
 }
