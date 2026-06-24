@@ -26,7 +26,10 @@ export class PostsController {
       },
     }),
   )
-  async create(@Body() body: any, @UploadedFile() file: Express.Multer.File | undefined, @Req() req: any) {
+  async create(
+    @Body() body: any, 
+    @UploadedFile() file: Express.Multer.File | undefined, 
+    @Req() req: any) {
     let imagen: string | undefined;
     if (file) {
       imagen = await this.cloudinaryService.uploadImage(file.buffer, 'post-images');

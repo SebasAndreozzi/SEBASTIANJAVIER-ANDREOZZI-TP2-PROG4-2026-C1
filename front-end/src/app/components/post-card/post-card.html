@@ -38,10 +38,10 @@
     </button>
   </div>
 
-  @if (safeComments().length > 0) {
+  @if (comments().length > 0) {
     <div class="post-comments">
       <div class="comments-list">
-        @for (comment of safeComments(); track $index) {
+        @for (comment of comments(); track $index) {
           <div class="comment-item">
             <div class="comment-content">
               <span class="comment-author">{{ comment.nombreUsuario}} </span>

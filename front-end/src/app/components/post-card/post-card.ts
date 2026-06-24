@@ -43,7 +43,7 @@ export class PostCard {
     }
   }
 
-  safeComments() {
+  comments() {
     const c = this.post()?.comentarios;
     if (!c || !Array.isArray(c)) return [];
     return c;

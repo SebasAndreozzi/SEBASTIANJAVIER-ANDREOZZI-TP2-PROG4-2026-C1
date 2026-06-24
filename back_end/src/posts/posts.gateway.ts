@@ -9,7 +9,7 @@ import { Server } from 'socket.io';
 })
 export class PostsGateway {
   @WebSocketServer()
-  server: Server;
+  server!: Server;
 
   emitPostCreated(post: any) {
     this.server.emit('postCreated', post);

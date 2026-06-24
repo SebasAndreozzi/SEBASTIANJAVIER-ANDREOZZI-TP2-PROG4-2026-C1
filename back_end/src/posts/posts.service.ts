@@ -8,7 +8,7 @@ import { PostsGateway } from './posts.gateway';
 export class PostsService {
   constructor(
     @InjectModel(Post.name) private postModel: Model<PostDocument>,
-    private readonly postsGateway: PostsGateway,
+    private readonly postsGateway: PostsGateway
   ) {}
 
   async create(createPostDto: any): Promise<PostDocument> {
@@ -28,8 +28,8 @@ export class PostsService {
       filter.autor = params.autor;
     }
 
-    const offset = parseInt(params.offset || '0', 10);
-    const limit = parseInt(params.limit || '10', 10);
+    const offset = parseInt(params.offset || '0', 10) || 0;
+    const limit = parseInt(params.limit || '5', 10) || 5;
     const sortDir = params.order === 'asc' ? 1 : -1;
 
     if (params.sort === 'likes') {

@@ -12,10 +12,6 @@ export class UsersService {
 
   constructor(private http: HttpClient) {}
 
-  getById(id: string): Observable<User> {
-    return this.http.get<User>(`${this.apiUrl}/${id}`);
-  }
-
   update(id: string, data: Partial<User>): Observable<User> {
     return this.http.patch<User>(`${this.apiUrl}/${id}`, data);
   }

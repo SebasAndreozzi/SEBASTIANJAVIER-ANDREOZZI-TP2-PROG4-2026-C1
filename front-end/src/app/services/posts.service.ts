@@ -21,10 +21,6 @@ export class PostsService {
     return this.http.get<Post[]>(this.apiUrl, { params: queryParams });
   }
 
-  getById(id: string): Observable<Post> {
-    return this.http.get<Post>(`${this.apiUrl}/${id}`);
-  }
-
   create(formData: FormData): Observable<Post> {
     return this.http.post<Post>(this.apiUrl, formData);
   }
