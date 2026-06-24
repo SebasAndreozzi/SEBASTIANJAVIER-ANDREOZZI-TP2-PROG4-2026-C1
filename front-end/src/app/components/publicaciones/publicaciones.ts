@@ -64,9 +64,9 @@ export class Publicaciones implements OnInit, OnDestroy {
       offset: this.currentPage() * this.pageSize,
       limit: this.pageSize,
     }).subscribe({
-      next: (posts) => {
-        this.posts.set(posts);
-        this.totalPages.set(posts.length < this.pageSize ? this.currentPage() + 1 : this.currentPage() + 2);
+      next: ({ data, total }) => {
+        this.posts.set(data);
+        this.totalPages.set(Math.ceil(total / this.pageSize));
         this.loading.set(false);
       },
       error: () => {

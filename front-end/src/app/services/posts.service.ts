@@ -11,14 +11,14 @@ export class PostsService {
   private http = inject(HttpClient);
   private readonly apiUrl = environment.apiUrl + '/posts';
 
-  getAll(params?: { sort?: string; order?: string; offset?: number; limit?: number; autor?: string }): Observable<Post[]> {
+  getAll(params?: { sort?: string; order?: string; offset?: number; limit?: number; autor?: string }): Observable<{ data: Post[], total: number }> {
     let queryParams: any = {};
     if (params?.sort) queryParams['sort'] = params.sort;
     if (params?.order) queryParams['order'] = params.order;
     if (params?.offset !== undefined) queryParams['offset'] = params.offset;
     if (params?.limit !== undefined) queryParams['limit'] = params.limit;
     if (params?.autor) queryParams['autor'] = params.autor;
-    return this.http.get<Post[]>(this.apiUrl, { params: queryParams });
+    return this.http.get<{ data: Post[], total: number }>(this.apiUrl, { params: queryParams });
   }
 
   create(formData: FormData): Observable<Post> {

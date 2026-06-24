@@ -72,7 +72,7 @@ export class PerfilUsuario implements OnInit, OnDestroy {
 
   private loadUserPosts(userId: string) {
     this.postsService.getAll({ autor: userId, limit: 3, sort: 'createdAt' }).subscribe({
-      next: (posts) => this.userPosts.set(posts),
+      next: ({ data }) => this.userPosts.set(data),
     });
   }
 

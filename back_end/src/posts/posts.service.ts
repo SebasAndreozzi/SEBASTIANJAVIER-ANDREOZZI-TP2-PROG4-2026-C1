@@ -22,7 +22,7 @@ export class PostsService {
     return saved;
   }
 
-  async findAll(params: { sort?: string; order?: string; offset?: string; limit?: string; autor?: string }): Promise<PostDocument[]> {
+  async findAll(params: { sort?: string; order?: string; offset?: string; limit?: string; autor?: string }): Promise<{ data: PostDocument[], total: number }> {
     const filter: any = { activo: true };
     if (params.autor) {
       filter.autor = params.autor;
@@ -31,6 +31,8 @@ export class PostsService {
     const offset = parseInt(params.offset || '0', 10) || 0;
     const limit = parseInt(params.limit || '5', 10) || 5;
     const sortDir = params.order === 'asc' ? 1 : -1;
+
+    const total = await this.postModel.countDocuments(filter).exec();
 
     if (params.sort === 'likes') {
       const pipeline: any[] = [
@@ -50,10 +52,11 @@ export class PostsService {
         .exec();
 
       const map = new Map(populated.map((p) => [p._id.toString(), p]));
-      return ids.map((id) => map.get(id.toString())).filter(Boolean) as PostDocument[];
+      const data = ids.map((id) => map.get(id.toString())).filter(Boolean) as PostDocument[];
+      return { data, total };
     }
 
-    return this.postModel
+    const data = await this.postModel
       .find(filter)
       .sort({ createdAt: sortDir })
       .skip(offset)
@@ -61,6 +64,7 @@ export class PostsService {
       .populate('autor', 'nombre apellido nombreUsuario imagenPerfil')
       .populate('comentarios.usuario', 'nombreUsuario')
       .exec();
+    return { data, total };
   }
 
   async findById(id: string): Promise<PostDocument | null> {
