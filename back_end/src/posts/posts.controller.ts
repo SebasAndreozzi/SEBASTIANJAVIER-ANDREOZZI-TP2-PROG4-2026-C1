@@ -50,12 +50,6 @@ export class PostsController {
   }
 
   @UseGuards(AuthGuard)
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return this.postsService.findById(id);
-  }
-
-  @UseGuards(AuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string, @Req() req: any) {
     return this.postsService.softDelete(id, req.user.sub);
