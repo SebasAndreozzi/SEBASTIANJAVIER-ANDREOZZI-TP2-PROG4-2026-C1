@@ -6,6 +6,7 @@ import { PostsService } from '../../services/posts.service';
 import { AuthService } from '../../services/auth.service';
 import { SocketService } from '../../services/socket.service';
 import { Post } from '../../interfaces/post';
+import { hasLetterOrNumberValidator } from '../../services/validators';
 
 @Component({
   selector: 'app-publicaciones',
@@ -32,9 +33,12 @@ export class Publicaciones implements OnInit, OnDestroy {
   pageSize = 5;
 
   postForm = this.fb.group({
-    titulo: ['', [Validators.required]],
-    mensaje: ['', [Validators.required]],
+    titulo: ['', [Validators.required, hasLetterOrNumberValidator]],
+    mensaje: ['', [Validators.required, hasLetterOrNumberValidator]],
   });
+
+  get tituloControl() { return this.postForm.get('titulo'); }
+  get mensajeControl() { return this.postForm.get('mensaje'); }
 
   ngOnInit() {
     this.loadPosts();

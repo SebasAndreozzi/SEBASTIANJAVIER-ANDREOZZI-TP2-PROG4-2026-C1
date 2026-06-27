@@ -18,10 +18,26 @@
         <h2>Crear publicación</h2>
         <form [formGroup]="postForm" (ngSubmit)="onCreatePost()" class="create-form">
           <div class="form-group">
-            <input type="text" formControlName="titulo" placeholder="Título de la publicación" />
+            <input type="text" formControlName="titulo" placeholder="Título de la publicación" maxlength="200" />
+            @if (tituloControl?.invalid && (tituloControl?.dirty || tituloControl?.touched)) {
+              @if (tituloControl?.errors?.['required']) {
+                <span class="field-error">El título es obligatorio</span>
+              }
+              @if (tituloControl?.errors?.['noLetterOrNumber']) {
+                <span class="field-error">El título debe contener al menos una letra o número</span>
+              }
+            }
           </div>
           <div class="form-group">
-            <textarea formControlName="mensaje" placeholder="¿Qué estás pensando?" rows="4"></textarea>
+            <textarea formControlName="mensaje" placeholder="¿Qué estás pensando?" rows="4" maxlength="5000"></textarea>
+            @if (mensajeControl?.invalid && (mensajeControl?.dirty || mensajeControl?.touched)) {
+              @if (mensajeControl?.errors?.['required']) {
+                <span class="field-error">El mensaje es obligatorio</span>
+              }
+              @if (mensajeControl?.errors?.['noLetterOrNumber']) {
+                <span class="field-error">El mensaje debe contener al menos una letra o número</span>
+              }
+            }
           </div>
           <div class="form-group">
             <input type="file" accept="image/*" (change)="onFileSelected($event)" class="file-input" />

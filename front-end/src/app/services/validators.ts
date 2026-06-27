@@ -28,3 +28,9 @@ export function futureDateValidator(control: AbstractControl): ValidationErrors 
   }
   return null;
 }
+
+export function hasLetterOrNumberValidator(control: AbstractControl): ValidationErrors | null {
+  const value = control.value || '';
+  const hasLetterOrNumber = /[a-zA-Z0-9]/.test(value);
+  return hasLetterOrNumber ? null : { noLetterOrNumber: true };
+}

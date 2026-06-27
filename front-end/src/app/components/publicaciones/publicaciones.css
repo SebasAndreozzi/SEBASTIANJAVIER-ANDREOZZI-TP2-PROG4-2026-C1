@@ -105,6 +105,12 @@
   flex-direction: column;
 }
 
+.field-error {
+  color: #ff6b6b;
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+}
+
 input, textarea {
   padding: 0.75rem 1rem;
   border: 2px solid rgba(255, 215, 0, 0.15);
@@ -115,6 +121,8 @@ input, textarea {
   font-family: inherit;
   background: rgba(10, 10, 26, 0.5);
   color: #f0e6d3;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 input::placeholder, textarea::placeholder {
