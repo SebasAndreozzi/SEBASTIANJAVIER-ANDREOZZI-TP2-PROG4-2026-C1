@@ -1,6 +1,5 @@
 import { mergeApplicationConfig, ApplicationConfig } from '@angular/core';
-import { provideServerRendering } from '@angular/platform-server';
-import { withRoutes, RenderMode } from '@angular/ssr';
+import { withRoutes, RenderMode, provideServerRendering } from '@angular/ssr';
 import type { ServerRoute } from '@angular/ssr';
 import { appConfig } from './app.config';
 
@@ -17,8 +16,7 @@ const serverRoutes: ServerRoute[] = [
 
 const serverConfig: ApplicationConfig = {
   providers: [
-    provideServerRendering(),
-    withRoutes(serverRoutes),
+    provideServerRendering(withRoutes(serverRoutes)),
   ],
 };
 
