@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { RenderMode } from '@angular/ssr';
 import { Login } from './components/login/login'
 import { Registro } from './components/registro/registro'
 import { Publicaciones } from './components/publicaciones/publicaciones';
@@ -12,7 +11,7 @@ export const routes: Routes = [
   { path: 'login', component: Login },
   { path: 'signup', component: Registro },
   { path: 'publicaciones', component: Publicaciones, canActivate: [authGuard] },
-  { path: 'publicaciones/:id', component: DetallePublicacion, canActivate: [authGuard], renderMode: RenderMode.Client },
+  { path: 'publicaciones/:id', component: DetallePublicacion, canActivate: [authGuard] },
   { path: 'perfil', component: PerfilUsuario, canActivate: [authGuard] },
   { path: '**', redirectTo: 'login' },
 ];
