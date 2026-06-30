@@ -5,7 +5,7 @@ import { appConfig } from './app.config';
 
 const serverRoutes: ServerRoute[] = [
   {
-    path: '/publicaciones/:id',
+    path: 'publicaciones/:id',
     renderMode: RenderMode.Client,
   },
   {
