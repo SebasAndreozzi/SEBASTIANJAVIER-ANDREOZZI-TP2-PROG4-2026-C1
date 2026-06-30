@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { SessionTimerService } from '../../services/session-timer.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { passwordStrengthValidator } from '../../services/validators';
 
@@ -16,6 +17,7 @@ export class Login {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private authService = inject(AuthService);
+  private sessionTimer = inject(SessionTimerService);
 
   errorMessage = signal('');
   loading = signal(false);
@@ -37,6 +39,7 @@ export class Login {
     const { email, password } = this.loginForm.value;
     this.authService.login(email!, password!).subscribe({
       next: () => {
+        this.sessionTimer.start();
         this.router.navigate(['/publicaciones']);
       },
       error: (err: HttpErrorResponse) => {

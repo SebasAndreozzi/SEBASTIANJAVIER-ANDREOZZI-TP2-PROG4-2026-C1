@@ -1,0 +1,131 @@
+<app-header />
+
+<main class="detail-layout">
+  <div class="detail-container">
+    <button class="btn-back" (click)="goBack()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+      Volver
+    </button>
+
+    @if (loading()) {
+      <div class="loading-container">
+        <div class="spinner-lg"></div>
+        <p>Cargando publicación...</p>
+      </div>
+    } @else if (post(); as p) {
+      <article class="post-detail-card">
+        <div class="post-detail-header">
+          <div class="post-author">
+            @if (p.autor.imagenPerfil) {
+              <img [src]="p.autor.imagenPerfil" alt="" class="author-avatar" />
+            } @else {
+              <div class="author-avatar-placeholder">{{ p.autor.nombre.charAt(0) }}{{ p.autor.apellido.charAt(0) }}</div>
+            }
+            <div class="author-info">
+              <span class="author-name">{{ p.autor.nombreUsuario }}</span>
+              <span class="post-date">{{ p.createdAt | date: 'MMM d, HH:mm' }}</span>
+            </div>
+          </div>
+          @if (isOwnPost()) {
+            <button class="btn-delete" (click)="onDelete(p._id)" aria-label="Eliminar publicación">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+            </button>
+          }
+        </div>
+
+        <div class="post-detail-body">
+          <h1 class="post-detail-title">{{ p.titulo }}</h1>
+          <p class="post-detail-message">{{ p.mensaje }}</p>
+          @if (p.imagen) {
+            <img [src]="p.imagen" alt="Imagen de la publicación" class="post-detail-image" />
+          }
+        </div>
+
+        <div class="post-detail-actions">
+          <button class="action-btn" [class.liked]="isLiked()" (click)="onLike()">
+            <svg width="22" height="22" viewBox="0 0 24 24" [attr.fill]="isLiked() ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+            </svg>
+            <span>{{ p.likes.length }} {{ p.likes.length === 1 ? 'Me gusta' : 'Me gusta' }}</span>
+          </button>
+        </div>
+
+        <div class="comments-section">
+          <h2 class="comments-title">Comentarios</h2>
+
+          <div class="comment-form">
+            <textarea
+              [(ngModel)]="newCommentText"
+              placeholder="Escribí un comentario..."
+              rows="2"
+              maxlength="1000"
+              class="comment-input"
+            ></textarea>
+            <button class="btn-primary" (click)="submitComment()" [disabled]="!newCommentText().trim()">
+              Comentar
+            </button>
+          </div>
+
+          @if (comments().length > 0) {
+            <div class="comments-list">
+              @for (comment of comments(); track comment._id) {
+                  <div class="comment-item">
+                  <div class="comment-content-wrapper">
+                    <div class="comment-header">
+                      <span class="comment-author-name">{{ comment.nombreUsuario }}</span>
+                      <span class="comment-date">{{ comment.fecha | date: 'MMM d, HH:mm' }}</span>
+                    </div>
+
+                    @if (editingCommentId() === comment._id) {
+                      <div class="edit-comment-form">
+                        <textarea
+                          [(ngModel)]="editCommentText"
+                          rows="2"
+                          maxlength="1000"
+                          class="comment-input"
+                        ></textarea>
+                        <div class="edit-actions">
+                          <button class="btn-secondary-small" (click)="cancelEditComment()">Cancelar</button>
+                          <button class="btn-primary-small" (click)="saveEditComment(comment._id)" [disabled]="!editCommentText().trim()">Guardar</button>
+                        </div>
+                      </div>
+                    } @else {
+                      <p class="comment-text">{{ comment.contenido }}</p>
+                      @if (comment.modificado) {
+                        <span class="edited-badge">editado</span>
+                      }
+                      @if (isOwnComment(comment)) {
+                        <button class="btn-edit-comment" (click)="startEditComment(comment)">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                          </svg>
+                        </button>
+                      }
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+
+            @if (hasMoreComments()) {
+              <button class="btn-load-more" (click)="loadMoreComments()" [disabled]="commentLoading()">
+                @if (commentLoading()) {
+                  <span class="spinner"></span>
+                }
+                Cargar más comentarios
+              </button>
+            }
+          } @else {
+            <p class="no-comments">No hay comentarios aún. ¡Sé el primero en comentar!</p>
+          }
+        </div>
+      </article>
+    }
+  </div>
+</main>

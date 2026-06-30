@@ -22,7 +22,7 @@
   </div>
 
   <div class="post-body">
-    <h3 class="post-title">{{ post().titulo }}</h3>
+    <h3 class="post-title" (click)="viewDetail.emit(post()._id)" role="button" tabindex="0" (keydown.enter)="viewDetail.emit(post()._id)">{{ post().titulo }}</h3>
     <p class="post-message">{{ post().mensaje }}</p>
     @if (post().imagen) {
       <img [src]="post().imagen" alt="Imagen de la publicación" class="post-image" />
@@ -39,17 +39,36 @@
   </div>
 
   @if (comments().length > 0) {
-    <div class="post-comments">
-      <div class="comments-list">
-        @for (comment of comments(); track $index) {
-          <div class="comment-item">
-            <div class="comment-content">
-              <span class="comment-author">{{ comment.nombreUsuario}} </span>
-              <p class="comment-text">{{ comment.contenido }}</p>
+    <div class="comments-list">
+      @for (comment of comments(); track comment._id) {
+        <div class="comment-item">
+          <div class="comment-content-wrapper">
+            <div class="comment-header">
+                      <span class="comment-author-name">{{ comment.nombreUsuario }}</span>
+              <span class="comment-date">{{ comment.fecha | date: 'MMM d, HH:mm' }}</span>
             </div>
+
+            <p class="comment-text">{{ comment.contenido }}</p>
+            @if (comment.modificado) {
+              <span class="edited-badge">editado</span>
+            }
+            @if (isOwnComment(comment)) {
+              <button class="btn-edit-comment" (click)="viewDetail.emit(post()._id)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+              </button>
+            }
           </div>
-        }
-      </div>
+        </div>
+      }
     </div>
+    @if (extraCommentsCount() > 0) {
+      <div class="more-comments-hint" (click)="viewDetail.emit(post()._id)" role="button" tabindex="0">
+        Ver más comentarios
+      </div>
+    }
   }
+</article>
 

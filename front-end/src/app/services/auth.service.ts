@@ -79,4 +79,12 @@ export class AuthService {
     if (!isPlatformBrowser(this.platformId)) return null;
     return localStorage.getItem(this.tokenKey);
   }
+
+  authorize(token: string): Observable<{ user: User }> {
+    return this.http.post<{ user: User }>(`${this.apiUrl}/authorize`, { token });
+  }
+
+  refreshToken(token: string): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/refresh`, { token });
+  }
 }

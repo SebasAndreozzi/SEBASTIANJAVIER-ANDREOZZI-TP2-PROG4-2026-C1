@@ -3,7 +3,7 @@ import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../services/auth.service';
 import { ApiImagePipe } from '../../pipes/api-image.pipe';
-import { Post } from '../../interfaces/post';
+import { Post, Comentario } from '../../interfaces/post';
 
 @Component({
   selector: 'app-post-card',
@@ -17,6 +17,7 @@ export class PostCard {
   post = input.required<Post>();
   liked = output<string>();
   deleted = output<string>();
+  viewDetail = output<string>();
 
   onLike() {
     this.liked.emit(this.post()._id);
@@ -43,15 +44,33 @@ export class PostCard {
     }
   }
 
+  readonly maxVisibleComments = 3;
+
   comments() {
     const c = this.post()?.comentarios;
     if (!c || !Array.isArray(c)) return [];
-    return c;
+    return [...c]
+      .sort((a, b) => new Date(b.fecha!).getTime() - new Date(a.fecha!).getTime())
+      .slice(0, this.maxVisibleComments);
+  }
+
+  totalComments(): number {
+    const c = this.post()?.comentarios;
+    return c ? c.length : 0;
+  }
+
+  extraCommentsCount(): number {
+    return Math.max(0, this.totalComments() - this.maxVisibleComments);
   }
 
   isOwnPost(): boolean {
     const user = this.authService.currentUser();
     return user ? this.post().autor._id === user._id : false;
+  }
+
+  isOwnComment(comment: Comentario): boolean {
+    const user = this.authService.currentUser();
+    return user ? comment.usuario === user._id : false;
   }
 
   isLiked(): boolean {

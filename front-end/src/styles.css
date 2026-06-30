@@ -43,6 +43,10 @@ input, textarea, select {
   font-family: inherit;
 }
 
+.swal2-popup .swal2-timer-progress-bar {
+  background: #ffd700;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
 }

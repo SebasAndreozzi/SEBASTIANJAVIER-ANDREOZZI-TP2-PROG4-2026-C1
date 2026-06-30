@@ -1,10 +1,12 @@
 import { Component, inject, signal, OnInit, OnDestroy } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Header } from '../header/header';
 import { PostCard } from '../post-card/post-card';
 import { PostsService } from '../../services/posts.service';
 import { AuthService } from '../../services/auth.service';
 import { SocketService } from '../../services/socket.service';
+import { SessionTimerService } from '../../services/session-timer.service';
 import { Post } from '../../interfaces/post';
 import { hasLetterOrNumberValidator } from '../../services/validators';
 
@@ -16,8 +18,10 @@ import { hasLetterOrNumberValidator } from '../../services/validators';
 })
 export class Publicaciones implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
+  private router = inject(Router);
   private postsService = inject(PostsService);
   private socketService = inject(SocketService);
+  private sessionTimer = inject(SessionTimerService);
   protected authService = inject(AuthService);
 
   posts = signal<Post[]>([]);
@@ -37,10 +41,16 @@ export class Publicaciones implements OnInit, OnDestroy {
     mensaje: ['', [Validators.required, hasLetterOrNumberValidator]],
   });
 
-  get tituloControl() { return this.postForm.get('titulo'); }
-  get mensajeControl() { return this.postForm.get('mensaje'); }
+  get tituloControl() {
+    return this.postForm.get('titulo')!;
+  }
+
+  get mensajeControl() {
+    return this.postForm.get('mensaje')!;
+  }
 
   ngOnInit() {
+    this.sessionTimer.start();
     this.loadPosts();
     this.socketService.on('postCreated', (post: Post) => {
       this.posts.update((posts) => [post, ...posts]);
@@ -138,6 +148,10 @@ export class Publicaciones implements OnInit, OnDestroy {
         this.errorMessage.set('Error al crear la publicación');
       },
     });
+  }
+
+  onViewDetail(postId: string) {
+    this.router.navigate(['/publicaciones', postId]);
   }
 
   onLike(postId: string) {
