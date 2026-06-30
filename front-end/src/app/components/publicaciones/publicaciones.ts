@@ -41,8 +41,13 @@ export class Publicaciones implements OnInit, OnDestroy {
     mensaje: ['', [Validators.required, hasLetterOrNumberValidator]],
   });
 
-  get tituloControl() { return this.postForm.get('titulo'); }
-  get mensajeControl() { return this.postForm.get('mensaje'); }
+  get tituloControl() {
+    return this.postForm.get('titulo')!;
+  }
+
+  get mensajeControl() {
+    return this.postForm.get('mensaje')!;
+  }
 
   ngOnInit() {
     this.sessionTimer.start();

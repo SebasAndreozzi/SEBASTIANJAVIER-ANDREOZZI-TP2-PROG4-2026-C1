@@ -78,9 +78,7 @@
                   <div class="comment-content-wrapper">
                     <div class="comment-header">
                       <span class="comment-author-name">{{ comment.nombreUsuario }}</span>
-                      @if (comment.fecha) {
-                        <span class="comment-date">{{ comment.fecha | date: 'MMM d, HH:mm' }}</span>
-                      }
+                      <span class="comment-date">{{ comment.fecha | date: 'MMM d, HH:mm' }}</span>
                     </div>
 
                     @if (editingCommentId() === comment._id) {

@@ -42,3 +42,19 @@ export class Post {
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);
+
+PostSchema.set('toJSON', {
+  transform: (_doc: any, ret: any) => {
+    if (Array.isArray(ret.comentarios)) {
+      ret.comentarios = ret.comentarios.map((c: any) => ({
+        _id: c._id,
+        contenido: c.contenido,
+        modificado: c.modificado ?? false,
+        fecha: c.fecha,
+        usuario: c.usuario?._id?.toString() ?? c.usuario?.toString?.() ?? c.usuario,
+        nombreUsuario: c.usuario?.nombreUsuario ?? 'Usuario',
+      }));
+    }
+    return ret;
+  },
+});

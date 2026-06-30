@@ -18,7 +18,6 @@ export class PostCard {
   liked = output<string>();
   deleted = output<string>();
   viewDetail = output<string>();
-  commentUpdated = output<string>();
 
   onLike() {
     this.liked.emit(this.post()._id);
@@ -62,14 +61,6 @@ export class PostCard {
     return Math.max(0, this.totalComments() - this.maxVisibleComments);
   }
 
-  getCommentUserName(comment: Comentario): string {
-    if (comment.nombreUsuario) return comment.nombreUsuario;
-    if (typeof comment.usuario === 'object' && comment.usuario?.nombreUsuario) {
-      return comment.usuario.nombreUsuario;
-    }
-    return 'Usuario';
-  }
-
   isOwnPost(): boolean {
     const user = this.authService.currentUser();
     return user ? this.post().autor._id === user._id : false;
@@ -77,9 +68,7 @@ export class PostCard {
 
   isOwnComment(comment: Comentario): boolean {
     const user = this.authService.currentUser();
-    if (!user) return false;
-    const userId = typeof comment.usuario === 'object' ? comment.usuario._id : comment.usuario;
-    return userId === user._id;
+    return user ? comment.usuario === user._id : false;
   }
 
   isLiked(): boolean {
