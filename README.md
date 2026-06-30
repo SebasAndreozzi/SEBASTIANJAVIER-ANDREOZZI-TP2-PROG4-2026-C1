@@ -7,8 +7,12 @@ Claudinary para almacenar imagenes
 Deploy - FrontEnd con Vercel
 Deploy - Backend con Render
 
+Sprint 3
+En este sprint le agregué funcionalidad de comentar publicaciones permitiendo agregar y editar comentarios mostrando el contenido, quien lo hizo, cuando lo hizo y si fue editado. Los comentarios se muestran de más reciente a más antiguo y de a 3 por vez, permitiendo cargar más. También sumé una pantalla para las publicaciones especificas mostrando el detalle de las mismas. Implemente JWT guadandolo en localStoraage y renovandolo cada 15min si el usuario no continua la seción. 
+En el backend agregué los endpoints de mostrar, crear y editar comentarios y validación de JWT.
+
 Sprint 2
-En este sprint le di funcionalidad a la pantalla de publicaciones, creando un nuevo componente post-card para mostrar cada publicación. También le agregue la funcionalidad de crear una nueva publicación con la opción de sumarle una imagan. Todas las imágenes ahora se guardan en claudinary. Las publicaciones vienen ordenadas por fecha de más reciente a menos reciente y pueden reordenarse por cantidad de likes, asi como eliminarse por el autor de la publicación. En la pantalla de perfil ahora se encuientra visible la información del usuario activo, pudiendo este editarla, y ver sus ultimas 3 publicaciones.
+En este sprint le di funcionalidad a la pantalla de publicaciones, creando un nuevo componente post-card para mostrar cada publicación. También le agregué la funcionalidad de crear una nueva publicación con la opción de sumarle una imagan. Todas las imágenes ahora se guardan en claudinary. Las publicaciones vienen ordenadas por fecha de más reciente a menos reciente y pueden reordenarse por cantidad de likes, asi como eliminarse por el autor de la publicación. En la pantalla de perfil ahora se encuientra visible la información del usuario activo, pudiendo este editarla, y ver sus ultimas 3 publicaciones.
 En el backend agregué los endpoints POST para crear publicaciones nuevas, PUT para editar la información de perfil, GET para traer las publicaciones, reordenarlas, y la información del usuario y DELETE para hacer la eliminación logica de las publicaciones.
 
 Sprint 1
