@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException, BadRequestException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, BadRequestException, Inject, forwardRef } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UsersService } from '../users/users.service';
@@ -38,7 +38,7 @@ export class AuthService {
       imagenPerfil: imagenPerfil || '',
     });
 
-    const payload = { sub: user._id, email: user.email };
+    const payload = { sub: user._id, email: user.email, rol: user.perfil };
     return {
       token: this.jwtService.sign(payload),
       user: this.sanitizeUser(user),
@@ -58,11 +58,41 @@ export class AuthService {
       throw new UnauthorizedException('Credenciales inválidas');
     }
 
-    const payload = { sub: user._id, email: user.email };
+    const payload = { sub: user._id, email: user.email, rol: user.perfil };
     return {
       token: this.jwtService.sign(payload),
       user: this.sanitizeUser(user),
     };
+  }
+
+  async authorize(token: string) {
+    try {
+      const payload = await this.jwtService.verifyAsync(token);
+      const user = await this.usersService.findById(payload.sub);
+      if (!user) {
+        throw new UnauthorizedException('Usuario no encontrado');
+      }
+      return { user: this.sanitizeUser(user) };
+    } catch {
+      throw new UnauthorizedException('Token inválido o vencido');
+    }
+  }
+
+  async refresh(token: string) {
+    try {
+      const payload = await this.jwtService.verifyAsync(token);
+      const user = await this.usersService.findById(payload.sub);
+      if (!user) {
+        throw new UnauthorizedException('Usuario no encontrado');
+      }
+      const newPayload = { sub: user._id, email: user.email, rol: user.perfil };
+      return {
+        token: this.jwtService.sign(newPayload),
+        user: this.sanitizeUser(user),
+      };
+    } catch {
+      throw new UnauthorizedException('Token inválido o vencido');
+    }
   }
 
   private validateAndFormatDate(dateStr: string): string {

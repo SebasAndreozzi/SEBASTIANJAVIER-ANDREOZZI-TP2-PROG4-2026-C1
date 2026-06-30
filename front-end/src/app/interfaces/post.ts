@@ -1,7 +1,10 @@
 export interface Comentario {
-  _id?: string;
-  nombreUsuario: string;
+  _id: string;
+  usuario: string | { _id: string; nombreUsuario: string };
+  nombreUsuario?: string;
   contenido: string;
+  modificado?: boolean;
+  fecha?: string;
 }
 
 export interface Post {

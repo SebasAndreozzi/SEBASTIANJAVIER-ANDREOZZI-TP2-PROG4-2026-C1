@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Post, PostDocument } from './posts.schema';
 import { PostsGateway } from './posts.gateway';
 
@@ -81,6 +81,89 @@ export class PostsService {
       .populate('autor', 'nombre apellido nombreUsuario imagenPerfil')
       .populate('comentarios.usuario', 'nombreUsuario')
       .exec();
+  }
+
+  async findPostById(id: string): Promise<PostDocument | null> {
+    return this.postModel
+      .findById(id)
+      .where({ activo: true })
+      .populate('autor', 'nombre apellido nombreUsuario imagenPerfil')
+      .populate('comentarios.usuario', 'nombreUsuario')
+      .exec();
+  }
+
+  async addComment(postId: string, userId: string, contenido: string): Promise<PostDocument> {
+    const post = await this.postModel.findById(postId);
+    if (!post) throw new NotFoundException('Publicación no encontrada');
+
+    post.comentarios.push({
+      _id: new Types.ObjectId(),
+      usuario: userId,
+      contenido,
+      modificado: false,
+      fecha: new Date(),
+    } as any);
+
+    const saved = await post.save();
+    const populated = await this.findPostById(postId);
+    this.postsGateway.emitPostUpdated(populated || saved);
+    return populated || saved;
+  }
+
+  async editComment(postId: string, commentId: string, userId: string, contenido: string): Promise<PostDocument> {
+    const post = await this.postModel.findById(postId);
+    if (!post) throw new NotFoundException('Publicación no encontrada');
+
+    const comment = (post.comentarios as any[]).find(
+      (c: any) => c._id.toString() === commentId,
+    );
+    if (!comment) throw new NotFoundException('Comentario no encontrado');
+
+    if (comment.usuario.toString() !== userId) {
+      throw new ForbiddenException('No tienes permiso para editar este comentario');
+    }
+
+    comment.contenido = contenido;
+    comment.modificado = true;
+
+    const saved = await post.save();
+    const populated = await this.findPostById(postId);
+    this.postsGateway.emitPostUpdated(populated || saved);
+    return populated || saved;
+  }
+
+  async getComments(postId: string, offset: number, limit: number): Promise<{ data: any[]; total: number }> {
+    const post = await this.postModel.findById(postId).exec();
+    if (!post) throw new NotFoundException('Publicación no encontrada');
+
+    const allComments = post.comentarios || [];
+    const total = allComments.length;
+
+    const sorted = [...allComments].sort(
+      (a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime(),
+    );
+
+    const sliced = sorted.slice(offset, offset + limit);
+
+    const userIds = sliced.map((c) => c.usuario);
+    const users = await this.postModel.db
+      .model('User')
+      .find({ _id: { $in: userIds } })
+      .select('nombreUsuario')
+      .exec();
+
+    const userMap = new Map(users.map((u) => [u._id.toString(), u]));
+
+    const data = sliced.map((c) => ({
+      _id: c._id,
+      contenido: c.contenido,
+      modificado: c.modificado,
+      fecha: c.fecha,
+      usuario: c.usuario.toString(),
+      nombreUsuario: userMap.get(c.usuario.toString())?.nombreUsuario || 'unknown',
+    }));
+
+    return { data, total };
   }
 
   async softDelete(postId: string, userId: string): Promise<PostDocument | null> {

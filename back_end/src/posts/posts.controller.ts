@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, UseGuards, Req, Delete, Query, UseInterceptors, UploadedFile, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Put, Body, Param, UseGuards, Req, Delete, Query, UseInterceptors, UploadedFile, BadRequestException } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 import { PostsService } from './posts.service';
@@ -38,6 +38,14 @@ export class PostsController {
   }
 
   @UseGuards(AuthGuard)
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    const post = await this.postsService.findPostById(id);
+    if (!post) throw new BadRequestException('Publicación no encontrada');
+    return post;
+  }
+
+  @UseGuards(AuthGuard)
   @Get()
   async findAll(
     @Query('sort') sort?: string,
@@ -65,5 +73,44 @@ export class PostsController {
   @Delete(':id/like')
   async unlike(@Param('id') id: string, @Req() req: any) {
     return this.postsService.unlikePost(id, req.user.sub);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post(':id/comments')
+  async addComment(
+    @Param('id') id: string,
+    @Body() body: { contenido: string },
+    @Req() req: any,
+  ) {
+    if (!body.contenido || !body.contenido.trim()) {
+      throw new BadRequestException('El comentario no puede estar vacío');
+    }
+    return this.postsService.addComment(id, req.user.sub, body.contenido);
+  }
+
+  @UseGuards(AuthGuard)
+  @Put(':id/comments/:commentId')
+  async editComment(
+    @Param('id') id: string,
+    @Param('commentId') commentId: string,
+    @Body() body: { contenido: string },
+    @Req() req: any,
+  ) {
+    if (!body.contenido || !body.contenido.trim()) {
+      throw new BadRequestException('El comentario no puede estar vacío');
+    }
+    return this.postsService.editComment(id, commentId, req.user.sub, body.contenido);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get(':id/comments')
+  async getComments(
+    @Param('id') id: string,
+    @Query('offset') offset?: string,
+    @Query('limit') limit?: string,
+  ) {
+    const off = parseInt(offset || '0', 10) || 0;
+    const lim = parseInt(limit || '5', 10) || 5;
+    return this.postsService.getComments(id, off, lim);
   }
 }

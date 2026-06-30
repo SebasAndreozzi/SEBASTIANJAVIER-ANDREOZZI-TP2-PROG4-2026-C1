@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { SessionTimerService } from '../../services/session-timer.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { passwordStrengthValidator, passwordMatchValidator, futureDateValidator } from '../../services/validators';
 
@@ -15,6 +16,7 @@ export class Registro {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private authService = inject(AuthService);
+  private sessionTimer = inject(SessionTimerService);
 
   errorMessage = signal('');
   loading = signal(false);
@@ -31,6 +33,7 @@ export class Registro {
       confirmPassword: ['', [Validators.required]],
       fechaNacimiento: ['', [Validators.required, futureDateValidator]],
       descripcionBreve: [''],
+      perfil: ['usuario', [Validators.required]],
     },
     { validators: passwordMatchValidator },
   );
@@ -68,6 +71,7 @@ export class Registro {
     formData.append('password', formValue.password!);
     formData.append('fechaNacimiento', formValue.fechaNacimiento!);
     formData.append('descripcionBreve', formValue.descripcionBreve || '');
+    formData.append('perfil', formValue.perfil || 'usuario');
 
     const file = this.selectedFile();
     if (file) {
@@ -76,6 +80,7 @@ export class Registro {
 
     this.authService.register(formData).subscribe({
       next: () => {
+        this.sessionTimer.start();
         this.router.navigate(['/publicaciones']);
       },
       error: (err: HttpErrorResponse) => {

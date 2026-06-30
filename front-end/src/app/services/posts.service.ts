@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Post } from '../interfaces/post';
+import { Post, Comentario } from '../interfaces/post';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -35,6 +35,25 @@ export class PostsService {
 
   unlikePost(id: string): Observable<Post> {
     return this.http.delete<Post>(`${this.apiUrl}/${id}/like`);
+  }
+
+  getPost(id: string): Observable<Post> {
+    return this.http.get<Post>(`${this.apiUrl}/${id}`);
+  }
+
+  addComment(postId: string, contenido: string): Observable<Post> {
+    return this.http.post<Post>(`${this.apiUrl}/${postId}/comments`, { contenido });
+  }
+
+  editComment(postId: string, commentId: string, contenido: string): Observable<Post> {
+    return this.http.put<Post>(`${this.apiUrl}/${postId}/comments/${commentId}`, { contenido });
+  }
+
+  getComments(postId: string, offset: number, limit: number): Observable<{ data: Comentario[]; total: number }> {
+    return this.http.get<{ data: Comentario[]; total: number }>(
+      `${this.apiUrl}/${postId}/comments`,
+      { params: { offset: offset.toString(), limit: limit.toString() } },
+    );
   }
 
 }

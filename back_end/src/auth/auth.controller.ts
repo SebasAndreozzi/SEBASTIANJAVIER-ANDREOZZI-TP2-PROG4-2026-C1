@@ -39,4 +39,14 @@ export class AuthController {
   async login(@Body() body: { email: string; password: string }) {
     return this.authService.login(body);
   }
+
+  @Post('authorize')
+  async authorize(@Body() body: { token: string }) {
+    return this.authService.authorize(body.token);
+  }
+
+  @Post('refresh')
+  async refresh(@Body() body: { token: string }) {
+    return this.authService.refresh(body.token);
+  }
 }

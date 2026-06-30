@@ -21,10 +21,21 @@ export class Post {
   likes!: string[];
 
   @Prop({
-    type: [{ usuario: { type: Types.ObjectId, ref: 'User' }, contenido: String }],
+    type: [{
+      usuario: { type: Types.ObjectId, ref: 'User' },
+      contenido: String,
+      modificado: { type: Boolean, default: false },
+      fecha: { type: Date, default: Date.now },
+    }],
     default: [],
   })
-  comentarios!: { usuario: Types.ObjectId; contenido: string;}[];
+  comentarios!: {
+    _id: Types.ObjectId;
+    usuario: Types.ObjectId;
+    contenido: string;
+    modificado: boolean;
+    fecha: Date;
+  }[];
 
   @Prop({ default: true })
   activo!: boolean;

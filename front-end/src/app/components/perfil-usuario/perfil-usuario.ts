@@ -1,5 +1,6 @@
 import { Component, inject, signal, OnInit, OnDestroy } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Header } from '../header/header';
 import { PostCard } from '../post-card/post-card';
 import { AuthService } from '../../services/auth.service';
@@ -18,6 +19,7 @@ import { Post } from '../../interfaces/post';
 })
 export class PerfilUsuario implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
+  private router = inject(Router);
   private authService = inject(AuthService);
   private usersService = inject(UsersService);
   private postsService = inject(PostsService);
@@ -74,6 +76,10 @@ export class PerfilUsuario implements OnInit, OnDestroy {
     this.postsService.getAll({ autor: userId, limit: 3, sort: 'createdAt' }).subscribe({
       next: ({ data }) => this.userPosts.set(data),
     });
+  }
+
+  onViewDetail(postId: string) {
+    this.router.navigate(['/publicaciones', postId]);
   }
 
   onLike(postId: string) {
