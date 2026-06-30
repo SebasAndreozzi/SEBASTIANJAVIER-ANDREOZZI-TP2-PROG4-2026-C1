@@ -180,9 +180,6 @@
   gap: 0.75rem;
 }
 
-.comment-item {
-}
-
 .comment-content-wrapper {
   flex: 1;
   min-width: 0;
