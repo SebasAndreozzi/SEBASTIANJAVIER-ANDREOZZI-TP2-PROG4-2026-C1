@@ -94,7 +94,7 @@ export class PostsService {
       contenido,
       modificado: false,
       fecha: new Date(),
-    });
+    } as any);
 
     const saved = await post.save();
     const populated = await this.findById(postId);
