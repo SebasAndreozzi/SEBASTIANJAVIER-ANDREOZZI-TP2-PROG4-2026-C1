@@ -149,11 +149,14 @@ export class PostsService {
     return { data, total };
   }
 
-  async softDelete(postId: string, userId: string): Promise<PostDocument | null> {
+  async softDelete(postId: string, userId: string, userRol?: string): Promise<PostDocument | null> {
     const post = await this.findById(postId);
     if (!post) throw new NotFoundException('Publicación no encontrada');
 
-    if ((post.autor as any)._id.toString() !== userId) {
+    const isOwner = (post.autor as any)._id.toString() === userId;
+    const isAdmin = userRol === 'administrador';
+
+    if (!isOwner && !isAdmin) {
       throw new ForbiddenException('No tienes permiso para eliminar esta publicación');
     }
 

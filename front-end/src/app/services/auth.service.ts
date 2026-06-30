@@ -80,6 +80,10 @@ export class AuthService {
     return localStorage.getItem(this.tokenKey);
   }
 
+  isAdmin(): boolean {
+    return this.currentUser()?.perfil === 'administrador';
+  }
+
   authorize(token: string): Observable<{ user: User }> {
     return this.http.post<{ user: User }>(`${this.apiUrl}/authorize`, { token });
   }

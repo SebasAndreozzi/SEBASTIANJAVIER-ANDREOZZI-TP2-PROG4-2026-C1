@@ -77,6 +77,16 @@
                     <textarea id="descripcionBreve" formControlName="descripcionBreve" rows="3"></textarea>
                   </div>
 
+                  <div class="form-group">
+                    <label for="imagenPerfil">Foto de perfil</label>
+                    <input id="imagenPerfil" type="file" accept="image/*" (change)="onFileSelected($event)" class="file-input" />
+                    @if (previewUrl()) {
+                      <div class="preview-container">
+                        <img [src]="previewUrl()" alt="Vista previa" class="preview-img" />
+                      </div>
+                    }
+                  </div>
+
                   @if (successMessage()) {
                     <div class="success-banner">{{ successMessage() }}</div>
                   }

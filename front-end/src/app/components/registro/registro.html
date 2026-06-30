@@ -83,14 +83,6 @@
       </div>
 
       <div class="form-group">
-        <label for="perfil">Rol</label>
-        <select id="perfil" formControlName="perfil" class="form-select">
-          <option value="usuario">Usuario</option>
-          <option value="administrador">Administrador</option>
-        </select>
-      </div>
-
-      <div class="form-group">
         <label for="imagenPerfil">Imagen de perfil</label>
         <input id="imagenPerfil" type="file" accept="image/*" (change)="onFileSelected($event)" class="file-input" />
         @if (previewUrl()) {

@@ -26,7 +26,7 @@ export class AuthService {
     const hashedPassword = await bcrypt.hash(password, 10);
     const fechaFormateada = this.validateAndFormatDate(fechaNacimiento);
 
-    const user = await this.usersService.create({
+    const userData: any = {
       nombre,
       apellido,
       email,
@@ -35,8 +35,11 @@ export class AuthService {
       fechaNacimiento: fechaFormateada,
       descripcionBreve: descripcionBreve || '',
       perfil: perfil || 'usuario',
-      imagenPerfil: imagenPerfil || '',
-    });
+    };
+    if (imagenPerfil) {
+      userData.imagenPerfil = imagenPerfil;
+    }
+    const user = await this.usersService.create(userData);
 
     const payload = { sub: user._id, email: user.email, rol: user.perfil };
     return {
@@ -51,6 +54,10 @@ export class AuthService {
     const user = await this.usersService.findByEmail(email);
     if (!user) {
       throw new UnauthorizedException('Credenciales inválidas');
+    }
+
+    if (!user.activo) {
+      throw new UnauthorizedException('Tu cuenta ha sido deshabilitada. Contacta al administrador.');
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);

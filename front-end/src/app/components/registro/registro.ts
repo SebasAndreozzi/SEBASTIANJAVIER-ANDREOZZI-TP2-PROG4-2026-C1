@@ -33,7 +33,6 @@ export class Registro {
       confirmPassword: ['', [Validators.required]],
       fechaNacimiento: ['', [Validators.required, futureDateValidator]],
       descripcionBreve: [''],
-      perfil: ['usuario', [Validators.required]],
     },
     { validators: passwordMatchValidator },
   );
@@ -71,7 +70,6 @@ export class Registro {
     formData.append('password', formValue.password!);
     formData.append('fechaNacimiento', formValue.fechaNacimiento!);
     formData.append('descripcionBreve', formValue.descripcionBreve || '');
-    formData.append('perfil', formValue.perfil || 'usuario');
 
     const file = this.selectedFile();
     if (file) {

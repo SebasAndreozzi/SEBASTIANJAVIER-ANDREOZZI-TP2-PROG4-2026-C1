@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { DEFAULT_AVATAR_URL } from '../constants';
 
 export type UserDocument = User & Document;
 
@@ -29,8 +30,11 @@ export class User {
   @Prop({ default: 'usuario' })
   perfil!: string;
 
-  @Prop({ default: '' })
+  @Prop({ default: DEFAULT_AVATAR_URL })
   imagenPerfil!: string;
+
+  @Prop({ default: true })
+  activo!: boolean;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

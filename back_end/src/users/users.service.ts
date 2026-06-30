@@ -1,4 +1,4 @@
-import { Injectable} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from './users.schema';
@@ -12,6 +12,10 @@ export class UsersService {
     return created.save();
   }
 
+  async findAll(): Promise<UserDocument[]> {
+    return this.userModel.find().select('-password').exec();
+  }
+
   async findByEmail(email: string): Promise<UserDocument | null> {
     return this.userModel.findOne({ email }).exec();
   }
@@ -19,11 +23,20 @@ export class UsersService {
   async findByNombreUsuario(nombreUsuario: string): Promise<UserDocument | null> {
     return this.userModel.findOne({ nombreUsuario }).exec();
   }
+
   async findById(id: string): Promise<UserDocument | null> {
     return this.userModel.findById(id).exec();
   }
 
   async update(id: string, updateData: any): Promise<UserDocument | null> {
     return this.userModel.findByIdAndUpdate(id, updateData, { new: true }).exec();
+  }
+
+  async disable(id: string): Promise<UserDocument | null> {
+    return this.userModel.findByIdAndUpdate(id, { activo: false }, { new: true }).select('-password').exec();
+  }
+
+  async enable(id: string): Promise<UserDocument | null> {
+    return this.userModel.findByIdAndUpdate(id, { activo: true }, { new: true }).select('-password').exec();
   }
 }

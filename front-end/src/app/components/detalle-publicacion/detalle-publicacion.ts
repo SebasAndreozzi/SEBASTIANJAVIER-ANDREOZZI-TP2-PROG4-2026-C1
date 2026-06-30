@@ -162,6 +162,10 @@ export class DetallePublicacion implements OnInit {
     return p && user ? p.autor._id === user._id : false;
   }
 
+  canDelete(): boolean {
+    return this.isOwnPost() || this.authService.isAdmin();
+  }
+
   isLiked(): boolean {
     const p = this.post();
     const user = this.authService.currentUser();

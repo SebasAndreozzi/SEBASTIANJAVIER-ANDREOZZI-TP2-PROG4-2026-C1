@@ -68,6 +68,10 @@ export class PostCard {
     return user ? this.post().autor._id === user._id : false;
   }
 
+  canDelete(): boolean {
+    return this.isOwnPost() || this.authService.isAdmin();
+  }
+
   isOwnComment(comment: Comentario): boolean {
     const user = this.authService.currentUser();
     return user ? comment.usuario === user._id : false;

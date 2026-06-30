@@ -60,7 +60,7 @@ export class PostsController {
   @UseGuards(AuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string, @Req() req: any) {
-    return this.postsService.softDelete(id, req.user.sub);
+    return this.postsService.softDelete(id, req.user.sub, req.user.rol);
   }
 
   @UseGuards(AuthGuard)

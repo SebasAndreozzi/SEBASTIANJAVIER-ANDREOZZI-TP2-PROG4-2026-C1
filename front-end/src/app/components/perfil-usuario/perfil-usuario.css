@@ -344,6 +344,54 @@ textarea {
   gap: 1rem;
 }
 
+.file-input {
+  padding: 0.5rem;
+  border: 2px dashed rgba(255, 215, 0, 0.25);
+  border-radius: 10px;
+  background: rgba(10, 10, 26, 0.3);
+  color: #c9b8e8;
+  font-size: 0.85rem;
+  cursor: pointer;
+  outline: none;
+  font-family: inherit;
+}
+
+.file-input:hover {
+  border-color: rgba(255, 215, 0, 0.5);
+}
+
+.file-input::file-selector-button {
+  padding: 0.35rem 0.75rem;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 6px;
+  background: transparent;
+  color: #ffd700;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-right: 0.75rem;
+  font-family: inherit;
+}
+
+.file-input::file-selector-button:hover {
+  background: rgba(255, 215, 0, 0.1);
+}
+
+.preview-container {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.preview-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ffd700;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.15);
+}
+
 .no-posts {
   text-align: center;
   color: #5a4a7a;
