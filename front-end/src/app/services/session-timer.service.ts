@@ -27,6 +27,8 @@ export class SessionTimerService implements OnDestroy {
       title: 'Sesión por vencer',
       text: 'Tu sesión vence en 5 minutos. ¿Deseas extenderla?',
       icon: 'warning',
+      timer: 5 * 60 * 1000,
+      timerProgressBar: true,
       showCancelButton: true,
       confirmButtonText: 'Sí, extender',
       cancelButtonText: 'Cerrar sesión',
@@ -34,6 +36,7 @@ export class SessionTimerService implements OnDestroy {
       color: '#f0e6d3',
       iconColor: '#ffd700',
       confirmButtonColor: '#ffd700',
+      
       cancelButtonColor: '#6c757d',
       reverseButtons: true,
       allowOutsideClick: false,

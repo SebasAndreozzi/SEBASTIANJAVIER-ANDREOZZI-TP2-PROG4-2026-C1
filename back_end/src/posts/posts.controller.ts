@@ -40,7 +40,7 @@ export class PostsController {
   @UseGuards(AuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    const post = await this.postsService.findPostById(id);
+    const post = await this.postsService.findById(id);
     if (!post) throw new BadRequestException('Publicación no encontrada');
     return post;
   }

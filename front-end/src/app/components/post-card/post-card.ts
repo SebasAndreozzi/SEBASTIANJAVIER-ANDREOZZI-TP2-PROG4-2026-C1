@@ -49,7 +49,9 @@ export class PostCard {
   comments() {
     const c = this.post()?.comentarios;
     if (!c || !Array.isArray(c)) return [];
-    return c.slice(0, this.maxVisibleComments);
+    return [...c]
+      .sort((a, b) => new Date(b.fecha!).getTime() - new Date(a.fecha!).getTime())
+      .slice(0, this.maxVisibleComments);
   }
 
   totalComments(): number {
