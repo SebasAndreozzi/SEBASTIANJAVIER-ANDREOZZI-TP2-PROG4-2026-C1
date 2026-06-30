@@ -111,7 +111,7 @@ export class PostsService {
     );
     if (!comment) throw new NotFoundException('Comentario no encontrado');
 
-    if (comment.usuario.toString() !== userId) {
+    if (comment.usuario._id.toString() !== userId) {
       throw new ForbiddenException('No tienes permiso para editar este comentario');
     }
 
@@ -153,7 +153,7 @@ export class PostsService {
     const post = await this.findById(postId);
     if (!post) throw new NotFoundException('Publicación no encontrada');
 
-    if (post.autor.toString() !== userId) {
+    if ((post.autor as any)._id.toString() !== userId) {
       throw new ForbiddenException('No tienes permiso para eliminar esta publicación');
     }
 
