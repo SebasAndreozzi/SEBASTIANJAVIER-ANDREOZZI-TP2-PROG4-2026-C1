@@ -14,7 +14,7 @@
     </div>
 
     @if (showCreateForm()) {
-      <div class="create-post-card">
+      <div class="create-post-card" (clickOutside)="toggleCreateForm()">
         <h2>Crear publicación</h2>
         <form [formGroup]="postForm" (ngSubmit)="onCreatePost()" class="create-form">
           <div class="form-group">

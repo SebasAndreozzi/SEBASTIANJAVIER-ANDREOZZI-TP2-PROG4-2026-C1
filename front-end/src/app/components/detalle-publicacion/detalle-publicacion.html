@@ -15,7 +15,7 @@
         <p>Cargando publicación...</p>
       </div>
     } @else if (post(); as p) {
-      <article class="post-detail-card">
+      <article class="post-detail-card" appearAnimation highlightOnHover>
         <div class="post-detail-header">
           <div class="post-author">
             @if (p.autor.imagenPerfil) {
@@ -25,7 +25,7 @@
             }
             <div class="author-info">
               <span class="author-name">{{ p.autor.nombreUsuario }}</span>
-              <span class="post-date">{{ p.createdAt | date: 'MMM d, HH:mm' }}</span>
+              <span class="post-date">{{ p.createdAt | timeAgo }}</span>
             </div>
           </div>
           @if (canDelete()) {
@@ -78,7 +78,7 @@
                   <div class="comment-content-wrapper">
                     <div class="comment-header">
                       <span class="comment-author-name">{{ comment.nombreUsuario }}</span>
-                      <span class="comment-date">{{ comment.fecha | date: 'MMM d, HH:mm' }}</span>
+                      <span class="comment-date">{{ comment.fecha | timeAgo }}</span>
                     </div>
 
                     @if (editingCommentId() === comment._id) {

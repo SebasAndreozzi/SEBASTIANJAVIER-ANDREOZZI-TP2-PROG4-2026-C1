@@ -9,15 +9,15 @@ export class TimeAgoPipe implements PipeTransform {
     const now = new Date();
     const date = new Date(value);
     const diffMs = now.getTime() - date.getTime();
-    const diffSec = Math.floor(diffMs / 1000);
-    const diffMin = Math.floor(diffSec / 60);
-    const diffHour = Math.floor(diffMin / 60);
-    const diffDay = Math.floor(diffHour / 24);
+    const diffMin = Math.floor(diffMs / 60000);
 
-    if (diffSec < 60) return 'Ahora';
+    if (diffMin < 1) return 'Ahora';
     if (diffMin < 60) return `Hace ${diffMin} min`;
-    if (diffHour < 24) return `Hace ${diffHour}h`;
-    if (diffDay < 7) return `Hace ${diffDay}d`;
-    return date.toLocaleDateString();
+
+    const month = date.toLocaleDateString('en-US', { month: 'short' });
+    const day = date.getDate();
+    const hh = String(date.getHours()).padStart(2, '0');
+    const mm = String(date.getMinutes()).padStart(2, '0');
+    return `${month} ${day}, ${hh}:${mm}`;
   }
 }

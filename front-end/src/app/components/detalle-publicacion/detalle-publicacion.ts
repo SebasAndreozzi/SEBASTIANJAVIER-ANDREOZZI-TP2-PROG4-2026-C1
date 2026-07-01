@@ -1,7 +1,9 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
+import { AppearAnimationDirective } from '../../directives/appear-animation.directive';
+import { HighlightOnHoverDirective } from '../../directives/highlight-on-hover.directive';
 import { PostsService } from '../../services/posts.service';
 import { AuthService } from '../../services/auth.service';
 import { Header } from '../header/header';
@@ -10,7 +12,7 @@ import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-detalle-publicacion',
-  imports: [Header, DatePipe, FormsModule],
+  imports: [Header, TimeAgoPipe, FormsModule, AppearAnimationDirective, HighlightOnHoverDirective],
   templateUrl: './detalle-publicacion.html',
   styleUrl: './detalle-publicacion.css',
 })

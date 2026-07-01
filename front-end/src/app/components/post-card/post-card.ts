@@ -1,13 +1,15 @@
 import { Component, input, output, inject } from '@angular/core';
-import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../services/auth.service';
 import { ApiImagePipe } from '../../pipes/api-image.pipe';
+import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
+import { AppearAnimationDirective } from '../../directives/appear-animation.directive';
+import { HighlightOnHoverDirective } from '../../directives/highlight-on-hover.directive';
 import { Post, Comentario } from '../../interfaces/post';
 
 @Component({
   selector: 'app-post-card',
-  imports: [DatePipe, ApiImagePipe],
+  imports: [TimeAgoPipe, ApiImagePipe, AppearAnimationDirective, HighlightOnHoverDirective],
   templateUrl: './post-card.html',
   styleUrl: './post-card.css',
 })

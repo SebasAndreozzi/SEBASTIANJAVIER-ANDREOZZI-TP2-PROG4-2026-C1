@@ -9,10 +9,11 @@ import { SocketService } from '../../services/socket.service';
 import { SessionTimerService } from '../../services/session-timer.service';
 import { Post } from '../../interfaces/post';
 import { hasLetterOrNumberValidator } from '../../services/validators';
+import { ClickOutsideDirective } from '../../directives/click-outside.directive';
 
 @Component({
   selector: 'app-publicaciones',
-  imports: [ReactiveFormsModule, Header, PostCard],
+  imports: [ReactiveFormsModule, Header, PostCard, ClickOutsideDirective],
   templateUrl: './publicaciones.html',
   styleUrl: './publicaciones.css',
 })

@@ -9,11 +9,13 @@ import { PostsService } from '../../services/posts.service';
 import { SocketService } from '../../services/socket.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ApiImagePipe } from '../../pipes/api-image.pipe';
+import { AppearAnimationDirective } from '../../directives/appear-animation.directive';
+import { ClickOutsideDirective } from '../../directives/click-outside.directive';
 import { Post } from '../../interfaces/post';
 
 @Component({
   selector: 'app-perfil-usuario',
-  imports: [ReactiveFormsModule, Header, PostCard, ApiImagePipe],
+  imports: [ReactiveFormsModule, Header, PostCard, ApiImagePipe, AppearAnimationDirective, ClickOutsideDirective],
   templateUrl: './perfil-usuario.html',
   styleUrl: './perfil-usuario.css',
 })
