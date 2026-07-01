@@ -1,0 +1,169 @@
+<app-header />
+
+<main class="dashboard-layout">
+  <div class="dashboard-container">
+    <div class="dashboard-header">
+      <h1 class="dashboard-title">Dashboard - Usuarios</h1>
+      <div class="dashboard-actions">
+        <a routerLink="/dashboard/estadisticas" class="btn-secondary">Ver Estadísticas</a>
+        <button class="btn-primary" (click)="toggleCreateForm()">
+          {{ showCreateForm() ? 'Cancelar' : 'Nuevo Usuario' }}
+        </button>
+      </div>
+    </div>
+
+    @if (showCreateForm()) {
+      <div class="create-form-card">
+        <h2>Crear Nuevo Usuario</h2>
+        <form [formGroup]="createForm" (ngSubmit)="onSubmit()" class="create-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nombre">Nombre</label>
+              <input id="nombre" type="text" formControlName="nombre" class="form-control" placeholder="Juan" />
+              @if (f['nombre'].invalid && f['nombre'].touched) {
+                <span class="error-text">El nombre es obligatorio</span>
+              }
+            </div>
+            <div class="form-group">
+              <label for="apellido">Apellido</label>
+              <input id="apellido" type="text" formControlName="apellido" class="form-control" placeholder="Perez" />
+              @if (f['apellido'].invalid && f['apellido'].touched) {
+                <span class="error-text">El apellido es obligatorio</span>
+              }
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Correo</label>
+              <input id="email" type="email" formControlName="email" class="form-control" placeholder="jperez@scard.com" />
+              @if (f['email'].invalid && f['email'].touched) {
+                <span class="error-text">Ingrese un correo válido</span>
+              }
+            </div>
+            <div class="form-group">
+              <label for="nombreUsuario">Nombre de Usuario</label>
+              <input id="nombreUsuario" type="text" formControlName="nombreUsuario" class="form-control" placeholder="jperez" />
+              @if (f['nombreUsuario'].invalid && f['nombreUsuario'].touched) {
+                <span class="error-text">El nombre de usuario es obligatorio</span>
+              }
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="password">Contraseña</label>
+              <input id="password" type="password" formControlName="password" class="form-control" placeholder="Mín. 8 caracteres, mayúscula y número" />
+              @if (f['password'].invalid && f['password'].touched) {
+                <span class="error-text">Debe tener al menos 8 caracteres, una mayúscula y un número</span>
+              }
+            </div>
+            <div class="form-group">
+              <label for="confirmPassword">Repetir Contraseña</label>
+              <input id="confirmPassword" type="password" formControlName="confirmPassword" class="form-control" placeholder="Repita la contraseña" />
+              @if (createForm.errors?.['passwordMismatch'] && f['confirmPassword'].touched) {
+                <span class="error-text">Las contraseñas no coinciden</span>
+              }
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fechaNacimiento">Fecha de Nacimiento</label>
+              <input id="fechaNacimiento" type="date" formControlName="fechaNacimiento" class="form-control" />
+              @if (f['fechaNacimiento'].invalid && f['fechaNacimiento'].touched) {
+                <span class="error-text">Fecha inválida</span>
+              }
+            </div>
+            <div class="form-group">
+              <label for="perfil">Perfil</label>
+              <div class="radio-group">
+                <label class="radio-label">
+                  <input type="radio" formControlName="perfil" value="usuario" />
+                  Usuario
+                </label>
+                <label class="radio-label">
+                  <input type="radio" formControlName="perfil" value="administrador" />
+                  Administrador
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="descripcionBreve">Descripción Breve</label>
+            <textarea id="descripcionBreve" formControlName="descripcionBreve" class="form-control" rows="2" placeholder="Breve descripción..."></textarea>
+          </div>
+
+          <button type="submit" class="btn-primary btn-full" [disabled]="createForm.invalid || createLoading()">
+            @if (createLoading()) {
+              <span class="spinner"></span>
+            }
+            Crear Usuario
+          </button>
+        </form>
+      </div>
+    }
+
+    @if (loading()) {
+      <div class="loading-container">
+        <div class="spinner"></div>
+        <p>Cargando usuarios...</p>
+      </div>
+    } @else {
+      <div class="users-table-container">
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th>Usuario</th>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Perfil</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (user of users(); track user._id) {
+              <tr>
+                <td class="user-cell">
+                  <div class="user-cell-info">
+                    @if (user.imagenPerfil) {
+                      <img [src]="user.imagenPerfil" alt="" class="user-mini-avatar" />
+                    } @else {
+                      <div class="user-mini-avatar-placeholder">{{ user.nombre.charAt(0) }}{{ user.apellido.charAt(0) }}</div>
+                    }
+                    <span>{{ user.nombreUsuario }}</span>
+                  </div>
+                </td>
+                <td>{{ user.nombre }} {{ user.apellido }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                  <span class="role-badge" [class.admin]="user.perfil === 'administrador'">
+                    {{ user.perfil === 'administrador' ? 'Admin' : 'Usuario' }}
+                  </span>
+                </td>
+                <td>
+                  <span class="status-badge" [class.active]="user.activo !== false" [class.inactive]="user.activo === false">
+                    {{ user.activo !== false ? 'Activo' : 'Inactivo' }}
+                  </span>
+                </td>
+                <td class="actions-cell">
+                  @if (user.activo !== false) {
+                    <button class="btn-danger-small" (click)="onDisable(user._id)" title="Deshabilitar usuario">
+                      Deshabilitar
+                    </button>
+                  } @else {
+                    <button class="btn-success-small" (click)="onEnable(user._id)" title="Habilitar usuario">
+                      Habilitar
+                    </button>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</main>

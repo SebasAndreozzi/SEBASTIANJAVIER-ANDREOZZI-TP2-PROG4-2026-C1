@@ -1,0 +1,98 @@
+<app-header />
+
+<main class="stats-layout">
+  <div class="stats-container">
+    <div class="stats-header">
+      <h1 class="stats-title">Dashboard - Estadísticas</h1>
+      <a routerLink="/dashboard/usuarios" class="btn-secondary">Gestionar Usuarios</a>
+    </div>
+
+    <div class="filters">
+      <div class="filter-group">
+        <label for="desde">Desde</label>
+        <input id="desde" type="date" [value]="desde()" (input)="desde.set($any($event.target).value)" class="filter-input" />
+      </div>
+      <div class="filter-group">
+        <label for="hasta">Hasta</label>
+        <input id="hasta" type="date" [value]="hasta()" (input)="hasta.set($any($event.target).value)" class="filter-input" />
+      </div>
+      <button class="btn-primary" (click)="loadAll()" [disabled]="loading()">
+        @if (loading()) { <span class="spinner"></span> }
+        Filtrar
+      </button>
+    </div>
+
+    @if (loading()) {
+      <div class="loading-container">
+        <div class="spinner-lg"></div>
+        <p>Cargando estadísticas...</p>
+      </div>
+    } @else {
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h2 class="chart-title">Publicaciones por Usuario</h2>
+          @if (postsPorUsuario().length > 0) {
+            <div class="chart-wrapper">
+              <svg viewBox="0 0 240 240" class="pie-svg">
+                <g [innerHTML]="safePieSvg()"></g>
+              </svg>
+            </div>
+            <div class="chart-legend">
+              @for (item of postPercentages(); track $index) {
+                <div class="legend-item">
+                  <span class="legend-color" [style.background]="pieChartData().colors[$index]"></span>
+                  <span class="legend-label">{{ item.usuario }}</span>
+                  <span class="legend-value">{{ item.porcentaje }}%</span>
+                </div>
+              }
+            </div>
+          } @else {
+            <p class="no-data">Sin datos</p>
+          }
+        </div>
+
+        <div class="chart-card">
+          <h2 class="chart-title">Comentarios por Usuario</h2>
+          @if (comentariosEnPeriodo().length > 0) {
+            <div class="chart-wrapper">
+              <svg viewBox="0 0 400 200" class="bar-svg">
+                <g [innerHTML]="safeBarSvg()"></g>
+              </svg>
+            </div>
+            <div class="chart-legend">
+              @for (item of comentariosEnPeriodo(); track $index) {
+                <div class="legend-item">
+                  <span class="legend-color" [style.background]="barChartData().colors[$index]"></span>
+                  <span class="legend-label">{{ item.usuario }}</span>
+                  <span class="legend-value">{{ item.cantidad }}</span>
+                </div>
+              }
+            </div>
+          } @else {
+            <p class="no-data">Sin datos</p>
+          }
+        </div>
+
+        <div class="chart-card chart-full">
+          <h2 class="chart-title">Comentarios por Publicación</h2>
+          @if (comentariosPorPublicacion().length > 0) {
+            <div class="chart-wrapper">
+              <svg viewBox="0 0 400 200" preserveAspectRatio="none" class="line-svg">
+                <g [innerHTML]="safeLineSvg()"></g>
+              </svg>
+            </div>
+            <div class="x-labels">
+              @for (item of comentariosPorPublicacion(); track item._id; let i = $index) {
+                <a class="x-label" [style.left]="lineLabelPositions()[i].left" [routerLink]="['/publicaciones', item._id]">
+                  {{ item.titulo | truncate:15 | capitalize }}
+                </a>
+              }
+            </div>
+          } @else {
+            <p class="no-data">Sin datos</p>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</main>

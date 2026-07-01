@@ -8,6 +8,7 @@ export interface User {
   descripcionBreve: string;
   perfil: string;
   imagenPerfil: string;
+  activo?: boolean;
 }
 
 export interface AuthResponse {

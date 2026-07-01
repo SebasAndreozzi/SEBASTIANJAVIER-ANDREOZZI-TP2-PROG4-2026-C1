@@ -30,6 +30,8 @@ export class PerfilUsuario implements OnInit, OnDestroy {
   successMessage = signal('');
   errorMessage = signal('');
   userPosts = signal<Post[]>([]);
+  selectedFile = signal<File | null>(null);
+  previewUrl = signal<string | null>(null);
 
   currentUser = this.authService.currentUser;
 
@@ -106,11 +108,24 @@ export class PerfilUsuario implements OnInit, OnDestroy {
     });
   }
 
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      this.selectedFile.set(file);
+      const reader = new FileReader();
+      reader.onload = () => this.previewUrl.set(reader.result as string);
+      reader.readAsDataURL(file);
+    }
+  }
+
   toggleEdit() {
     this.editing.update((v) => !v);
     if (!this.editing()) {
       const user = this.currentUser();
       if (user) this.patchForm(user);
+      this.selectedFile.set(null);
+      this.previewUrl.set(null);
     }
   }
 
@@ -124,12 +139,27 @@ export class PerfilUsuario implements OnInit, OnDestroy {
     const user = this.currentUser();
     if (!user) return;
 
-    this.usersService.update(user._id, this.profileForm.value as any).subscribe({
+    const formData = new FormData();
+    const value = this.profileForm.value;
+    formData.append('nombre', value.nombre!);
+    formData.append('apellido', value.apellido!);
+    formData.append('email', value.email!);
+    formData.append('nombreUsuario', value.nombreUsuario!);
+    formData.append('descripcionBreve', value.descripcionBreve || '');
+
+    const file = this.selectedFile();
+    if (file) {
+      formData.append('imagenPerfil', file);
+    }
+
+    this.usersService.update(user._id, formData).subscribe({
       next: (updatedUser) => {
         this.loading.set(false);
         this.successMessage.set('Perfil actualizado correctamente');
         this.authService.currentUser.set(updatedUser);
         this.editing.set(false);
+        this.selectedFile.set(null);
+        this.previewUrl.set(null);
       },
       error: (err: HttpErrorResponse) => {
         this.loading.set(false);

@@ -101,7 +101,10 @@ export class App implements OnInit {
           }
           this.sessionTimer.start();
           this.loading.set(false);
-          this.router.navigate(['/publicaciones']);
+          const currentUrl = isPlatformBrowser(this.platformId) ? window.location.pathname : '/publicaciones';
+          if (currentUrl === '/' || currentUrl === '/login' || currentUrl === '/signup') {
+            this.router.navigate(['/publicaciones']);
+          }
         },
         error: () => {
           this.authService.logout();
