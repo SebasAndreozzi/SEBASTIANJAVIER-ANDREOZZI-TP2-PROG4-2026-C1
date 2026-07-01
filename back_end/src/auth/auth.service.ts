@@ -57,7 +57,7 @@ export class AuthService {
     }
 
     if (!user.activo) {
-      throw new UnauthorizedException('Tu cuenta ha sido deshabilitada. Contacta al administrador.');
+      throw new UnauthorizedException('Tu cuenta fue deshabilitada. Contactá al administrador.');
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);

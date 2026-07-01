@@ -48,7 +48,7 @@ export class UsersController {
   @UseGuards(AuthGuard, AdminGuard)
   @Get()
   async findAll() {
-    return this.usersService.findAll();
+    return await this.usersService.findAll();
   }
 
   @UseGuards(AuthGuard, AdminGuard)

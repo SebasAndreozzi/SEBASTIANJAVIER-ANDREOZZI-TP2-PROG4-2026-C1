@@ -3,7 +3,8 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { Header } from '../header/header';
-import { EstadisticasService, PostsPorUsuario, ComentariosEnPeriodo, ComentariosPorPublicacion } from '../../services/estadisticas.service';
+import { EstadisticasService } from '../../services/estadisticas.service';
+import { PostsPorUsuario, ComentariosEnPeriodo, ComentariosPorPublicacion } from '../../interfaces/estadistica';
 import { TruncatePipe } from '../../pipes/truncate.pipe';
 import { CapitalizePipe } from '../../pipes/capitalize.pipe';
 

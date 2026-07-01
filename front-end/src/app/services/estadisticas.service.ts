@@ -2,22 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-
-export interface PostsPorUsuario {
-  usuario: string;
-  cantidad: number;
-}
-
-export interface ComentariosEnPeriodo {
-  usuario: string;
-  cantidad: number;
-}
-
-export interface ComentariosPorPublicacion {
-  _id: string;
-  titulo: string;
-  cantidadComentarios: number;
-}
+import { PostsPorUsuario, ComentariosEnPeriodo, ComentariosPorPublicacion } from '../interfaces/estadistica';
 
 @Injectable({
   providedIn: 'root',
