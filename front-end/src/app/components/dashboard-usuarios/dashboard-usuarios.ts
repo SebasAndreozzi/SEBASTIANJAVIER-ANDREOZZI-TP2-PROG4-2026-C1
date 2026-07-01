@@ -36,7 +36,7 @@ export class DashboardUsuarios implements OnInit {
     perfil: ['usuario', Validators.required],
   }, { validators: passwordMatchValidator });
 
-  get f() { return this.createForm.controls; }
+  get formControls() { return this.createForm.controls; }
 
   ngOnInit() {
     this.loadUsers();

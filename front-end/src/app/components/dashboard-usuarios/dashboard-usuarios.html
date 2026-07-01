@@ -20,14 +20,14 @@
             <div class="form-group">
               <label for="nombre">Nombre</label>
               <input id="nombre" type="text" formControlName="nombre" class="form-control" placeholder="Juan" />
-              @if (f['nombre'].invalid && f['nombre'].touched) {
+              @if (formControls['nombre'].invalid && formControls['nombre'].touched) {
                 <span class="error-text">El nombre es obligatorio</span>
               }
             </div>
             <div class="form-group">
               <label for="apellido">Apellido</label>
               <input id="apellido" type="text" formControlName="apellido" class="form-control" placeholder="Perez" />
-              @if (f['apellido'].invalid && f['apellido'].touched) {
+              @if (formControls['apellido'].invalid && formControls['apellido'].touched) {
                 <span class="error-text">El apellido es obligatorio</span>
               }
             </div>
@@ -37,14 +37,14 @@
             <div class="form-group">
               <label for="email">Correo</label>
               <input id="email" type="email" formControlName="email" class="form-control" placeholder="jperez@scard.com" />
-              @if (f['email'].invalid && f['email'].touched) {
+              @if (formControls['email'].invalid && formControls['email'].touched) {
                 <span class="error-text">Ingrese un correo válido</span>
               }
             </div>
             <div class="form-group">
               <label for="nombreUsuario">Nombre de Usuario</label>
               <input id="nombreUsuario" type="text" formControlName="nombreUsuario" class="form-control" placeholder="jperez" />
-              @if (f['nombreUsuario'].invalid && f['nombreUsuario'].touched) {
+              @if (formControls['nombreUsuario'].invalid && formControls['nombreUsuario'].touched) {
                 <span class="error-text">El nombre de usuario es obligatorio</span>
               }
             </div>
@@ -54,14 +54,14 @@
             <div class="form-group">
               <label for="password">Contraseña</label>
               <input id="password" type="password" formControlName="password" class="form-control" placeholder="Mín. 8 caracteres, mayúscula y número" />
-              @if (f['password'].invalid && f['password'].touched) {
+              @if (formControls['password'].invalid && formControls['password'].touched) {
                 <span class="error-text">Debe tener al menos 8 caracteres, una mayúscula y un número</span>
               }
             </div>
             <div class="form-group">
               <label for="confirmPassword">Repetir Contraseña</label>
               <input id="confirmPassword" type="password" formControlName="confirmPassword" class="form-control" placeholder="Repita la contraseña" />
-              @if (createForm.errors?.['passwordMismatch'] && f['confirmPassword'].touched) {
+              @if (createForm.errors?.['passwordMismatch'] && formControls['confirmPassword'].touched) {
                 <span class="error-text">Las contraseñas no coinciden</span>
               }
             </div>
@@ -71,7 +71,7 @@
             <div class="form-group">
               <label for="fechaNacimiento">Fecha de Nacimiento</label>
               <input id="fechaNacimiento" type="date" formControlName="fechaNacimiento" class="form-control" />
-              @if (f['fechaNacimiento'].invalid && f['fechaNacimiento'].touched) {
+              @if (formControls['fechaNacimiento'].invalid && formControls['fechaNacimiento'].touched) {
                 <span class="error-text">Fecha inválida</span>
               }
             </div>
