@@ -1,0 +1,22 @@
+{
+  "$schema": "./node_modules/@angular/service-worker/config/schema.json",
+  "index": "/index.csr.html",
+  "assetGroups": [
+    {
+      "name": "app-shell",
+      "installMode": "prefetch",
+      "updateMode": "lazy",
+      "resources": {
+        "files": ["/index.csr.html", "/*.js", "/*.css"]
+      }
+    },
+    {
+      "name": "static-assets",
+      "installMode": "lazy",
+      "updateMode": "lazy",
+      "resources": {
+        "files": ["/**/*.png", "/**/*.svg", "/**/*.ico"]
+      }
+    }
+  ]
+}
