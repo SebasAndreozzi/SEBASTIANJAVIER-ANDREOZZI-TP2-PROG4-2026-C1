@@ -7,6 +7,9 @@ Claudinary para almacenar imagenes
 Deploy - FrontEnd con Vercel
 Deploy - Backend con Render
 
+Sprint 4
+En este sprint le agregué funcionalidades exclusivas para ususarios administradores. Estos usuarios ahora pueden ver todos los usuariosregistrados y habilitarlos o dehabilitarlos. Así como dar de alta nuevos usuarios y asignarles roles. También pueden hacer softDelete a cualquier publicación aunque no sean los autores. También le agregué una pantalla de estadisticas donde pueden ver el porcentaje de publicación de cada usuario, cuantos comentarios hace cada usuario y que publicaciones son las más comentadas. Logré implementar PWA haciendo que la página pueda correr de manera offline y pude hacer mis propios pipes (Capitalize, la primera mayuscula, time-ago, muestra el tiempo en función de hace cuanto pasó y si pasó más de 1h muesta la fecha y el horario, y truncate, que elimina espacios a los costados del titulo y contenido de los posts)
+
 Sprint 3
 En este sprint le agregué funcionalidad de comentar publicaciones permitiendo agregar y editar comentarios mostrando el contenido, quien lo hizo, cuando lo hizo y si fue editado. Los comentarios se muestran de más reciente a más antiguo y de a 3 por vez, permitiendo cargar más. También sumé una pantalla para las publicaciones especificas mostrando el detalle de las mismas. Implemente JWT guadandolo en localStoraage y renovandolo cada 15min si el usuario no continua la seción. 
 En el backend agregué los endpoints de mostrar, crear y editar comentarios y validación de JWT.
